@@ -3,7 +3,6 @@ import re
 from Unit19Modules.mqtt import mqtt
 from Unit19Modules.wifi import wifiConnectClass
 
-
 mqtt_link = None
 wifi_obj = None
 wifi_links = None

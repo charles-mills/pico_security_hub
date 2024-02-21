@@ -1,11 +1,12 @@
 master_loop = True
-networking_enabled = False
+networking_enabled = True
 
 config_dict = {
-    "audio_mute": True,
+    "audio_mute": False,
     "audio_low": False,
     "motion_enabled": True,
     "motion_publish": True,
+    "motion_sensitive": False,
     "LED_enabled": True,
     "temperature_publish": True,
 }

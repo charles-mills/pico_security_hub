@@ -3,14 +3,16 @@ import asyncio
 from pico_security_hub.config import networking
 from pico_security_hub.config import config_vars as master
 from Unit19Modules.DHT_Module import DHT11_Module
+from pico_security_hub.controllers import control_led
 
 
 async def publ_local_temp(dht11):
     while True:
-        if master.master_loop:
+        if master.master_loop and master.config_dict["temperature_publish"]:
             try:
                 local_temp = dht11.getTemperature()
                 networking.publ_data(networking.mqtt_link, "localTemperature", local_temp, mute=True)
+                await control_led.send_colour()
             except:  # Broad exception clause as the expected error ("MQTT") does not support targeted exception
                 pass
         await asyncio.sleep(5)
@@ -18,10 +20,11 @@ async def publ_local_temp(dht11):
 
 async def publ_local_humidity(dht11):
     while True:
-        if master.master_loop:
+        if master.master_loop and master.config_dict["temperature_publish"]:
             try:
                 local_humidity = dht11.getHumidity()
                 networking.publ_data(networking.mqtt_link, "localHumidity", local_humidity, mute=True)
+                await control_led.send_colour()
             except:
                 pass
 

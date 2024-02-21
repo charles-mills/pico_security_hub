@@ -3,6 +3,7 @@ import time
 from Unit19Modules.neopixel import board_neoPixel as neopixel
 from Unit19Modules.monochromeDisplay import grove_display
 from pico_security_hub.config import networking
+from pico_security_hub.controllers import control_led
 
 
 def get_skull_lines():
@@ -42,42 +43,48 @@ def display_welcome_text(display, t_label, s_label, repeat=4, pause=0.05):
     display.updateLabelText(s_label, "Initialising Network")
 
 
-def end_components(display, neopixel):
+def end_components(display):
     time.sleep(0.25)
     display.clearScreen()
     time.sleep(0.25)
     display.closeDisplay()
-    neopixel.close()
 
 
 def main():
     display = grove_display.BitmapDisplay(1)
-    neo = neopixel.neoPixel()
 
     title = display.addLabel(23, 25, 2, "")
     label_1 = display.addLabel(8, 44, 1, "")
-    neo.setBlue(20)
+    control_led.neo.setBlue(20)
     
     y = 0
 
+    skull_dis = []
+
     for line in get_skull_lines():
-        display.addLabel(0, y, 1, line)
+        skull_dis.append(display.addLabel(0, y, 1, line))
         y += 10
 
     time.sleep(0.1)
+    
+    for x in skull_dis:
+        display.updateLabelText(x, "")
+    
     display_welcome_text(display, title, label_1)
     
     try:
         networking.main()
-        neo.setGreen(20)
+        control_led.neo.setGreen(20)
         display.updateLabelText(label_1, "Connection Success")
     except AttributeError:
         print("Network Connection Failed")
-        neo.setRed(20)
+        control_led.neo.setRed(20)
         display.updateLabelText(label_1, "Connection Failed")
         time.sleep(0.75)
+        end_components(display)
+        raise RuntimeError
         
-    end_components(display, neo)
+    end_components(display)
 
 
 if __name__ == "__main__":

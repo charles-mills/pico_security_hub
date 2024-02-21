@@ -5,6 +5,8 @@ import pulseio
 
 from pico_security_hub.config import networking
 from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import publishing
+from pico_security_hub.controllers import control_led
 
 
 motion_detected = False
@@ -15,7 +17,7 @@ sonic_ranger = pulseio.PulseIn(board.GP3)
 async def get_baseline(loops):
     global motion_detected
 
-    loop = True
+    master.motion_enabled = False
     results = []
 
     for x in range(loops):
@@ -27,7 +29,8 @@ async def get_baseline(loops):
         results.append(sonic_ranger[0] * 0.017)
 
     centre_result = results[int(loops/2)]
-    print(f"Motion Detection: Baseline Test Complete: {centre_result}cm")
+    print(f"Motion Detection: Baseline Test Completed - {centre_result}cm")
+    master.motion_enabled = True
     return centre_result
 
 
@@ -39,7 +42,12 @@ async def check_motion():
     expected_range_cm -= expected_range_cm / 10
 
     while True:
-        if master.master_loop and master.motion_detection_enabled:
+        if master.master_loop and master.config_dict["motion_enabled"]:
+            allowed_flags = 5
+            
+            if master.config_dict["motion_sensitive"]:
+                allowed_flags = 2
+            
             sonic_ranger.clear()
             sonic_ranger.resume(1)
             await asyncio.sleep(0.25)
@@ -49,16 +57,25 @@ async def check_motion():
 
             if actual_dist_cm < expected_range_cm:
                 motion_detection_flags += 1
+                control_led.alarm_active = True
                 motion_detected = True
-            elif actual_dist_cm > expected_range_cm and motion_detection_flags > 0:
+            elif actual_dist_cm > expected_range_cm and motion_detection_flags > 0 :
                 motion_detection_flags -= 1
+                control_led.alarm_active = False
+                motion_detected = False
+            else:
+                motion_detection_flags = 0
+                control_led.alarm_active = False
                 motion_detected = False
 
-            if motion_detection_flags >= 5:
+
+            if motion_detection_flags >= allowed_flags:
                 motion_detection_flags = 0
-                if master.publ_motion:
+                if master.config_dict["motion_publish"]:
                     networking.publ_data(networking.mqtt_link, "motionDetected", "Motion Detected!", mute=True)
-                print("Motion Detected")
+                    await publishing.trigger("Motion Detection", "Motion Detected")
+                else:
+                    await publishing.trigger("Motion Detection", "Motion Detected", False)
         else:
             await asyncio.sleep(0.5)
 

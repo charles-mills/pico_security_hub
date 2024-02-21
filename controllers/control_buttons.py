@@ -29,7 +29,7 @@ async def process_buttons(cycle, select, cycle_menu, forfeit):
         elif forfeit.fell:
             display.exit_program = True
 
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(0.05)
 
 
 async def main():
@@ -41,3 +41,7 @@ async def main():
     buttons_task = asyncio.create_task(process_buttons(cycle_btn, select_btn, cycle_menu_btn, forfeit_btn))
 
     await asyncio.gather(buttons_task)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
