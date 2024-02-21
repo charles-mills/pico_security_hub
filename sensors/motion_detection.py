@@ -27,6 +27,7 @@ async def get_baseline(loops):
         results.append(sonic_ranger[0] * 0.017)
 
     centre_result = results[int(loops/2)]
+    print(f"Motion Detection: Baseline Test Complete: {centre_result}cm")
     return centre_result
 
 
@@ -67,8 +68,6 @@ async def main():
 
     baseline = await asyncio.gather(asyncio.create_task(get_baseline(10)))
     expected_range_cm = baseline[0]
-    
-    print(f"Motion Detection: Baseline Test Complete: {expected_range_cm}cm")
     
     await asyncio.gather(asyncio.create_task(check_motion()))
 

@@ -16,6 +16,22 @@ exit_program = False
 display_selector_option = 1
 
 
+def confirm_change(var, menu, display, title, label_1, label_2, label_3):
+    selection_index = menu.get_visible_options().index(menu.current_highlighted)
+
+    if var:
+        text = "Option is now True"
+    else:
+        text = "Option is now False"
+
+    if selection_index == 0:
+        display.updateLabelText(label_1, text)
+    elif selection_index == 1:
+        display.updateLabelText(label_2, text)
+    elif selection_index == 2:
+        display.updateLabelText(label_3, text)
+
+
 def pause_display(display, title, label_1, label_2, label_3, text="Paused"):
     global loop
 
@@ -26,8 +42,35 @@ def pause_display(display, title, label_1, label_2, label_3, text="Paused"):
     display.updateLabelText(label_3, "")
 
 
+async def toggle_var_and_confirm(var, menu, display, title, label_1, label_2, label_3):
+    master.toggle_var(var)
+
+    confirm_change(var, menu, display, title, label_1, label_2, label_3)
+    await asyncio.sleep(0.5)
+    display_visible_highlights(display, menu, title, label_1, label_2, label_3)
+
+
+async def motion_re_initialise(display, title, label_1, label_2, label_3):
+    global loop
+
+    pause_display(display, title, label_1, label_2, label_3, "Re-initialising...")
+    master.motion_detection_enabled = False
+    baseline = await asyncio.create_task(motion_detection.get_baseline(15))
+    motion_detection.expected_range_cm = (baseline - baseline / 10)
+    master.motion_detection_enabled = True
+    loop = True
+
+
 async def respond_to_buttons(display, menu, title, label_1, label_2, label_3):
     global loop, selection_changed, cycle_highlighted, exit_program, display_selector_option
+
+    find_toggle = {
+        "re-initialise_motion": motion_re_initialise(display, title, label_1, label_2, label_3),
+        "enabled_motion": toggle_var_and_confirm(master.motion_detection_enabled,
+                                                 menu, display, title, label_1, label_2, label_3),
+        "publish_motion": toggle_var_and_confirm(master.publ_motion,
+                                                 menu, display, title, label_1, label_2, label_3),
+    }  # NOT WORKING, ONLY SETS TO TRUE ONCE, FIX
 
     while True:
         if loop:
@@ -37,17 +80,23 @@ async def respond_to_buttons(display, menu, title, label_1, label_2, label_3):
 
             if selection_changed:
                 selection_changed = False
+
+                highlight_id = menu.current_highlighted + "_" + menu.current_option
+                print(f"Highlight ID: {highlight_id}")
+
                 if menu.current_highlighted == "back":
+                    # Go back to main menu
                     menu.set_current_option("main")
-                elif menu.current_highlighted == "re-initialise" and menu.current_option == "motion":
-                    pause_display(display, title, label_1, label_2, label_3, "Re-initialising...")
-                    master.motion_detection_enabled = False
-                    baseline = await asyncio.create_task(motion_detection.get_baseline(15))
-                    motion_detection.expected_range_cm = (baseline - baseline / 10)
-                    master.motion_detection_enabled = True
-                    loop = True
-                else:
+
+                elif highlight_id in find_toggle:
+                    await find_toggle[highlight_id]  # NOT WORKING, ONLY SETS TO TRUE ONCE, FIX
+
+                elif menu.current_highlighted in menu.main_menu_highlights:
+                    # If in main menu, select the option currently highlighted
                     menu.select_current_highlighted()
+                else:
+                    # Catch-all to send user back to main menu
+                    menu.set_current_option("main")
 
             if exit_program:
                 loop = False

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="Add display func">
+    <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/control_display.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_display.py" afterDir="false" />
     </list>
@@ -78,7 +78,7 @@
       <workItem from="1708516105684" duration="2531000" />
       <workItem from="1708518702079" duration="992000" />
       <workItem from="1708519761341" duration="416000" />
-      <workItem from="1708520197582" duration="2753000" />
+      <workItem from="1708520197582" duration="5995000" />
     </task>
     <task id="LOCAL-00001" summary="Make options menu selection dynamic">
       <option name="closed" value="true" />
