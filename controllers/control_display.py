@@ -3,8 +3,9 @@ from Unit19Modules.monochromeDisplay import grove_display
 import asyncio
 
 from pico_security_hub.controllers import display_class
+from pico_security_hub.sensors import motion_detection
 from pico_security_hub.config import networking
-
+from pico_security_hub.config import config_vars as master
 
 # Global variables
 
@@ -15,17 +16,39 @@ exit_program = False
 display_selector_option = 1
 
 
+def pause_display(display, title, label_1, label_2, label_3, text="Paused"):
+    global loop
+
+    loop = False
+    display.updateLabelText(title, "")
+    display.updateLabelText(label_1, "Display Paused")
+    display.updateLabelText(label_2, text)
+    display.updateLabelText(label_3, "")
+
+
 async def respond_to_buttons(display, menu, title, label_1, label_2, label_3):
     global loop, selection_changed, cycle_highlighted, exit_program, display_selector_option
-
-    print("running")
 
     while True:
         if loop:
             if cycle_highlighted:
                 cycle_highlighted = False
                 menu.cycle_highlighted()
-                print(menu.current_highlighted, menu.highlighted_index)
+
+            if selection_changed:
+                selection_changed = False
+                if menu.current_highlighted == "back":
+                    menu.set_current_option("main")
+                elif menu.current_highlighted == "re-initialise" and menu.current_option == "motion":
+                    pause_display(display, title, label_1, label_2, label_3, "Re-initialising...")
+                    master.motion_detection_enabled = False
+                    baseline = await asyncio.create_task(motion_detection.get_baseline(15))
+                    motion_detection.expected_range_cm = (baseline - baseline / 10)
+                    master.motion_detection_enabled = True
+                    loop = True
+                else:
+                    menu.select_current_highlighted()
+
             if exit_program:
                 loop = False
                 display.clearScreen()
@@ -37,10 +60,16 @@ async def respond_to_buttons(display, menu, title, label_1, label_2, label_3):
         await asyncio.sleep(0.05)
 
 
+def set_title_text(display, title, menu):
+    menu_title = display_class.capitalise_first(menu.current_option)
+    menu_title = f"{menu_title} Menu {menu.highlighted_index + 1}/{len(menu.option_to_defaults[menu.current_option])}"
+
+    display.updateLabelText(title, menu_title)
+
+
 def display_visible_highlights(display, menu, title, label_1, label_2, label_3):
     to_display = menu.get_current_list()
-
-    display.updateLabelText(title, display_class.capitalise_first(menu.current_option) + " Menu")
+    set_title_text(display, title, menu)
 
     try:
         display.updateLabelText(label_1, to_display[0])
@@ -70,6 +99,7 @@ async def main():
     respond_task = asyncio.create_task(respond_to_buttons(display, menu, title, label_1, label_2, label_3))
 
     await asyncio.gather(respond_task)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

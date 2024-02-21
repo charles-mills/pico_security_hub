@@ -6,7 +6,7 @@ class VisibleMenu:
 
         self.main_menu_highlights = ["audio", "motion", "LED", "temperature"]  # Options in main menu
         self.audio_menu_highlights = ["mute", "low", "back"]  # Options in audio menu
-        self.motion_menu_highlights = ["enabled", "publish", "back"]  # Options in motion menu
+        self.motion_menu_highlights = ["enabled", "publish", "re-initialise", "back"]  # Options in motion menu
         self.led_menu_highlights = ["enabled", "back"]  # Options in LED menu
         self.temperature_menu_highlights = ["publish", "back"]  # Options in temperature menu
 
@@ -37,8 +37,12 @@ class VisibleMenu:
     def set_current_menu(self, menu):
         self.current_menu = menu
 
+    def select_current_highlighted(self):
+        self.set_current_option(self.current_highlighted)
+
     def set_current_option(self, option):
         self.current_option = option
+        self.set_current_highlighted(self.option_to_defaults[self.current_option][0])
 
     def set_current_highlighted(self, highlighted):
         self.current_highlighted = highlighted

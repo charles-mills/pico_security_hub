@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="Add display func">
-      <change afterPath="$PROJECT_DIR$/controllers/control_buttons.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/control_display.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/display_class.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sensors/local_temp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/boot.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/boot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config_vars.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_vars.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/networking.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/networking.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sensors/hardware_temp.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/hardware_temp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sensors/motion_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/motion_detection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/control_display.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_display.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +76,9 @@
       <workItem from="1708447249794" duration="7298000" />
       <workItem from="1708512089586" duration="3911000" />
       <workItem from="1708516105684" duration="2531000" />
-      <workItem from="1708518702079" duration="829000" />
+      <workItem from="1708518702079" duration="992000" />
+      <workItem from="1708519761341" duration="416000" />
+      <workItem from="1708520197582" duration="2753000" />
     </task>
     <task id="LOCAL-00001" summary="Make options menu selection dynamic">
       <option name="closed" value="true" />

@@ -22,14 +22,14 @@ async def process_buttons(cycle, select, cycle_menu, forfeit):
 
         if cycle.fell:
             display.cycle_highlighted = True
-        if select.fell:
+        elif select.fell:
             display.selection_changed = True
-        if cycle_menu.fell:
+        elif cycle_menu.fell:
             display.display_selector_option = True
-        if forfeit.fell:
+        elif forfeit.fell:
             display.exit_program = True
 
-        await asyncio.sleep(0.05)
+        await asyncio.sleep(0.1)
 
 
 async def main():

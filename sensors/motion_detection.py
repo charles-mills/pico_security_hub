@@ -38,7 +38,7 @@ async def check_motion():
     expected_range_cm -= expected_range_cm / 10
 
     while True:
-        if master.master_loop:
+        if master.master_loop and master.motion_detection_enabled:
             sonic_ranger.clear()
             sonic_ranger.resume(1)
             await asyncio.sleep(0.25)
