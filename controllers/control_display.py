@@ -45,7 +45,7 @@ def pause_display(display, title, label_1, label_2, label_3, text="Paused"):
 async def toggle_var_and_confirm(var, menu, display, title, label_1, label_2, label_3):
     master.toggle_var(var)
 
-    confirm_change(var, menu, display, title, label_1, label_2, label_3)
+    confirm_change(master.config_dict[var], menu, display, title, label_1, label_2, label_3)
     await asyncio.sleep(0.5)
     display_visible_highlights(display, menu, title, label_1, label_2, label_3)
 
@@ -64,14 +64,6 @@ async def motion_re_initialise(display, title, label_1, label_2, label_3):
 async def respond_to_buttons(display, menu, title, label_1, label_2, label_3):
     global loop, selection_changed, cycle_highlighted, exit_program, display_selector_option
 
-    find_toggle = {
-        "re-initialise_motion": motion_re_initialise(display, title, label_1, label_2, label_3),
-        "enabled_motion": toggle_var_and_confirm(master.motion_detection_enabled,
-                                                 menu, display, title, label_1, label_2, label_3),
-        "publish_motion": toggle_var_and_confirm(master.publ_motion,
-                                                 menu, display, title, label_1, label_2, label_3),
-    }  # NOT WORKING, ONLY SETS TO TRUE ONCE, FIX
-
     while True:
         if loop:
             if cycle_highlighted:
@@ -81,15 +73,19 @@ async def respond_to_buttons(display, menu, title, label_1, label_2, label_3):
             if selection_changed:
                 selection_changed = False
 
-                highlight_id = menu.current_highlighted + "_" + menu.current_option
-                print(f"Highlight ID: {highlight_id}")
+                highlight_id = menu.current_option + "_" + menu.current_highlighted
 
                 if menu.current_highlighted == "back":
                     # Go back to main menu
                     menu.set_current_option("main")
+                    
+                elif highlight_id == "motion_re-initialise":
+                    await motion_re_initialise(display, title, label_1, label_2, label_3)
 
-                elif highlight_id in find_toggle:
-                    await find_toggle[highlight_id]  # NOT WORKING, ONLY SETS TO TRUE ONCE, FIX
+                elif highlight_id in master.config_dict:
+                    # If the current highlight is a toggleable option, toggle it
+                    await toggle_var_and_confirm(highlight_id,
+                                                 menu, display, title, label_1, label_2, label_3)
 
                 elif menu.current_highlighted in menu.main_menu_highlights:
                     # If in main menu, select the option currently highlighted

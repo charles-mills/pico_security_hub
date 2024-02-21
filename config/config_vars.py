@@ -1,26 +1,15 @@
 master_loop = True
+networking_enabled = False
 
-# Audio
-
-audio_enabled = True
-audio_low = False
-
-# Motion Detection
-
-motion_detection_enabled = True
-publ_motion = True
-
-# LED
-
-led_enabled = True
-
-# Temperature
-
-publ_temp = True
+config_dict = {
+    "audio_mute": True,
+    "audio_low": False,
+    "motion_enabled": True,
+    "motion_publish": True,
+    "LED_enabled": True,
+    "temperature_publish": True,
+}
 
 
 def toggle_var(var):
-    if var:
-        var = False
-    else:
-        var = True
+    config_dict[var] = not config_dict[var]
