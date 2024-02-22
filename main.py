@@ -10,6 +10,7 @@ from pico_security_hub.controllers import control_display
 from pico_security_hub.controllers import control_led
 from pico_security_hub.controllers import control_buzzer
 from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import subscriptions
 
 
 async def start_offline():
@@ -22,6 +23,8 @@ async def start_offline():
 
 async def start_online():
     boot.main()
+    # Start the subscription task
+    subscription_task = asyncio.create_task(subscriptions.main())
     # Start the motion detection sensor
     motion_task = asyncio.create_task(motion_detection.main())
     # Start the hardware temperature sensor
@@ -41,8 +44,8 @@ async def start_online():
 
     control_buzzer.queue_tunes["start"] = True
 
-    await asyncio.gather(motion_task, hardware_task, local_task, buttons_task, display_task, led_task, uptime_task,
-                         buzzer_task)
+    await asyncio.gather(subscription_task, motion_task, hardware_task,
+                         local_task, buttons_task, display_task, led_task, uptime_task, buzzer_task)
 
 
 async def main():

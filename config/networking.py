@@ -2,10 +2,9 @@ import re
 
 from Unit19Modules.mqtt import mqtt
 from Unit19Modules.wifi import wifiConnectClass
+from pico_security_hub.config import config_vars as master
 
 mqtt_link = None
-wifi_obj = None
-wifi_links = None
 
 
 def title(string):
@@ -24,6 +23,11 @@ def list_feeds(mqtt_l):
     for feed in feeds:
         print("\tSubscribed to  : " + feed)
     print("\t" + "-" * 40)
+
+
+def publ_initial_config(mqtt_l):
+    for key in master.config_dict:
+        publ_data(mqtt_l, key, master.bool_to_str[master.config_dict[key]], True)
 
 
 def connect_adafruit(wifi_links, subscription_list):
@@ -45,19 +49,17 @@ def publ_data(mqtt_l, publication, value, mute=False):
 
 def main():
     global mqtt_link
-    global wifi_obj
-    global wifi_links
 
-    publication_list = ["coreTemperature", "motionDetected", "motionPublishingStatus", "motionDetectionDisabled",
-                        "audioMuted", "audioLow", "ledOff"]
+    subscription_list = []
 
-    subscription_list = ["/feeds/motionPublishingStatus", "/feeds/motionDetectionDisabled", "/feeds/audioMuted",
-                         "/feeds/audioLow", "/feeds/ledOff"]
+    for key in master.config_dict:
+        subscription_list.append("/feeds/" + key)
 
     wifi_obj = wifiConnectClass.WiFi()
     wifi_links = wifi_obj.connectToWiFi()
 
     mqtt_link = connect_adafruit(wifi_links, subscription_list)
+    publ_initial_config(mqtt_link)
 
 
 if __name__ == "__main__":

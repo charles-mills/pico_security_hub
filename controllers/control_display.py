@@ -61,10 +61,11 @@ def motion_detection_menu(display, title, label_1, label_2, label_3):
     in_options = False
 
     display.updateLabelText(title, "Motion Detection")
-    if motion_detection.motion_detected:
-        display.updateLabelText(label_1, "Motion Detected!")
-    else:
-        display.updateLabelText(label_1, "No Motion Detected...")
+    if master.motion_enabled:
+        if motion_detection.motion_detected:
+            display.updateLabelText(label_1, "Motion Detected!")
+        else:
+            display.updateLabelText(label_1, "No Motion Detected...")
     display.updateLabelText(label_2, "")
     display.updateLabelText(label_3, "")
 
@@ -76,11 +77,11 @@ async def display_menus(display, menu, title, label_1, label_2, label_3):
         elif display_selector_option == 1:
             warnings_menu(display, title, label_1, label_2, label_3)
         elif display_selector_option == 2:
-            display_visible_highlights(display, menu, title, label_1, label_2, label_3)
+            flood_detection_menu(display, title, label_1, label_2, label_3)
         elif display_selector_option == 3:
             fire_detection_menu(display, title, label_1, label_2, label_3)
         elif display_selector_option == 4:
-            flood_detection_menu(display, title, label_1, label_2, label_3)
+            display_visible_highlights(display, menu, title, label_1, label_2, label_3)
 
         await asyncio.sleep(0.25)
 
@@ -114,6 +115,7 @@ def pause_display(display, title, label_1, label_2, label_3, text="Paused"):
 async def toggle_var_and_confirm(var, menu, display, title, label_1, label_2, label_3):
     master.toggle_var(var)
 
+    networking.publ_data(networking.mqtt_link, var, master.bool_to_str[master.config_dict[var]], True)
     confirm_change(master.config_dict[var], menu, display, title, label_1, label_2, label_3)
     await asyncio.sleep(0.5)
 

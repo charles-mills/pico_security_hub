@@ -27,7 +27,7 @@ async def publ_local_temp(dht11):
         if master.master_loop and master.config_dict["temperature_publish"]:
             try:
                 local_temp = dht11.getTemperature()
-                networking.publ_data(networking.mqtt_link, "localTemperature", local_temp, mute=True)
+                networking.publ_data(networking.mqtt_link, "local_temperature", local_temp, mute=True)
                 await control_led.send_colour()
             except:  # Broad exception clause as the expected error ("MQTT") does not support targeted exception
                 pass
@@ -41,7 +41,7 @@ async def publ_local_humidity(dht11):
         if master.master_loop and master.config_dict["temperature_publish"]:
             try:
                 local_humidity = dht11.getHumidity()
-                networking.publ_data(networking.mqtt_link, "localHumidity", local_humidity, mute=True)
+                networking.publ_data(networking.mqtt_link, "local_humidity", local_humidity, mute=True)
                 await control_led.send_colour()
             except:  # Broad exception clause as the expected error ("MQTT") does not support targeted exception
                 pass

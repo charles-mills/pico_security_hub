@@ -1,6 +1,13 @@
 master_loop = True
 networking_enabled = True
 
+
+bool_to_str = {
+    True: "ON",
+    False: "OFF"
+}
+
+
 config_dict = {
     "audio_mute": False,
     "audio_low": False,
