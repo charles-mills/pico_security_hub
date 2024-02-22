@@ -3,7 +3,6 @@ import asyncio
 from pico_security_hub.config import config_vars as master
 from Unit19Modules.neopixel import board_neoPixel
 
-
 neo = board_neoPixel.neoPixel()
 
 colour_in_queue = False
@@ -16,6 +15,11 @@ colour_to_func = {
     "yellow": neo.setYellow(20),
     "white": neo.setWhite(20),
 }
+
+
+def disable():
+    master.config_dict["LED_enabled"] = False
+    neo.off()
 
 
 def led_active():
@@ -37,11 +41,11 @@ async def trigger_alarm():
                 await asyncio.sleep(0.25)
         else:
             await asyncio.sleep(0.25)
-        
+
 
 async def send_colour(time=0.1):
     global colour_in_queue
-    
+
     if led_active():
         if not alarm_active:
             neo.setMagenta(20)
@@ -56,6 +60,7 @@ async def idle():
             if not colour_in_queue and not alarm_active:
                 neo.setWhite(10)
         await asyncio.sleep(0.25)
-        
+
+
 async def main():
     await asyncio.gather(idle(), trigger_alarm())

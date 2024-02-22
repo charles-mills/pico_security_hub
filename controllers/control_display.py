@@ -4,6 +4,7 @@ import asyncio
 
 from pico_security_hub.controllers import display_class
 from pico_security_hub.sensors import motion_detection
+from pico_security_hub.sensors import local_temp
 from pico_security_hub.config import networking
 from pico_security_hub.config import config_vars as master
 
@@ -13,7 +14,75 @@ loop = True
 selection_changed = False
 cycle_highlighted = False
 exit_program = False
-display_selector_option = 1
+in_options = False
+display_selector_option = 0
+max_index_options = 4
+
+
+def flood_detection_menu(display, title, label_1, label_2, label_3):
+    global in_options
+
+    in_options = False
+
+    # Non-functional due to a lack of relevant sensors
+    # Flood risk APIs are not usable due to cost
+
+    display.updateLabelText(title, "Flood Detection")
+    display.updateLabelText(label_1, "Overall Risk: Low")
+    display.updateLabelText(label_2, "Water Levels: 0%")
+    display.updateLabelText(label_3, "")
+
+
+def fire_detection_menu(display, title, label_1, label_2, label_3):
+    global in_options
+
+    in_options = False
+
+    display.updateLabelText(title, "Fire Detection")
+    display.updateLabelText(label_1, f"Overall Risk: {local_temp.fire_risk()}")
+    display.updateLabelText(label_2, f"Temperature: {local_temp.local_temp}°C")
+    display.updateLabelText(label_3, f"Humidity: {local_temp.local_humidity}%")
+
+
+def warnings_menu(display, title, label_1, label_2, label_3):
+    global in_options
+
+    in_options = False
+
+    display.updateLabelText(title, "Warnings")
+    display.updateLabelText(label_1, "No Warnings")
+    display.updateLabelText(label_2, "")
+    display.updateLabelText(label_3, "")
+
+
+def motion_detection_menu(display, title, label_1, label_2, label_3):
+    global in_options
+
+    in_options = False
+
+    display.updateLabelText(title, "Motion Detection")
+    if motion_detection.motion_detected:
+        display.updateLabelText(label_1, "Motion Detected!")
+    else:
+        display.updateLabelText(label_1, "No Motion Detected...")
+    display.updateLabelText(label_2, "")
+    display.updateLabelText(label_3, "")
+
+
+async def display_menus(display, menu, title, label_1, label_2, label_3):
+    while True:
+        if display_selector_option == 0:
+            motion_detection_menu(display, title, label_1, label_2, label_3)
+        elif display_selector_option == 1:
+            warnings_menu(display, title, label_1, label_2, label_3)
+        elif display_selector_option == 2:
+            display_visible_highlights(display, menu, title, label_1, label_2, label_3)
+        elif display_selector_option == 3:
+            fire_detection_menu(display, title, label_1, label_2, label_3)
+        elif display_selector_option == 4:
+            flood_detection_menu(display, title, label_1, label_2, label_3)
+
+        await asyncio.sleep(0.25)
 
 
 def confirm_change(var, menu, display, title, label_1, label_2, label_3):
@@ -47,7 +116,6 @@ async def toggle_var_and_confirm(var, menu, display, title, label_1, label_2, la
 
     confirm_change(master.config_dict[var], menu, display, title, label_1, label_2, label_3)
     await asyncio.sleep(0.5)
-    display_visible_highlights(display, menu, title, label_1, label_2, label_3)
 
 
 async def motion_re_initialise(display, title, label_1, label_2, label_3):
@@ -78,7 +146,7 @@ async def respond_to_buttons(display, menu, title, label_1, label_2, label_3):
                 if menu.current_highlighted == "back":
                     # Go back to main menu
                     menu.set_current_option("main")
-                    
+
                 elif highlight_id == "motion_re-initialise":
                     await motion_re_initialise(display, title, label_1, label_2, label_3)
 
@@ -100,8 +168,6 @@ async def respond_to_buttons(display, menu, title, label_1, label_2, label_3):
                 await asyncio.sleep(0.5)
                 display.closeDisplay()
                 await asyncio.sleep(0.5)
-
-            display_visible_highlights(display, menu, title, label_1, label_2, label_3)
         await asyncio.sleep(0.05)
 
 
@@ -113,6 +179,10 @@ def set_title_text(display, title, menu):
 
 
 def display_visible_highlights(display, menu, title, label_1, label_2, label_3):
+    global in_options
+
+    in_options = True
+
     to_display = menu.get_current_list()
     set_title_text(display, title, menu)
 
@@ -139,11 +209,10 @@ async def main():
     label_2 = display.addLabel(8, 30, 1, "")
     label_3 = display.addLabel(8, 45, 1, "")
 
-    display_visible_highlights(display, menu, title, label_1, label_2, label_3)
-
+    cycle_menu_task = asyncio.create_task(display_menus(display, menu, title, label_1, label_2, label_3))
     respond_task = asyncio.create_task(respond_to_buttons(display, menu, title, label_1, label_2, label_3))
 
-    await asyncio.gather(respond_task)
+    await asyncio.gather(respond_task, cycle_menu_task)
 
 
 if __name__ == "__main__":

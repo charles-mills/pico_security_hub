@@ -12,7 +12,7 @@ async def publ_cpu_temp():
             cpu_temp = microcontroller.cpu.temperature
             networking.publ_data(networking.mqtt_link, "coreTemperature", cpu_temp, mute=True)
             await control_led.send_colour()
-            await asyncio.sleep(5)
+        await asyncio.sleep(5)
 
 
 async def main():

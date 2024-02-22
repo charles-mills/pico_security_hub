@@ -1,8 +1,10 @@
 import board
 import asyncio
 import digitalio
+import sys
 
 from pico_security_hub.controllers import control_display as display
+from pico_security_hub.controllers import control_led
 from adafruit_debouncer import Debouncer
 
 
@@ -20,15 +22,23 @@ async def process_buttons(cycle, select, cycle_menu, forfeit):
         cycle_menu.update()
         forfeit.update()
 
-        if cycle.fell:
-            display.cycle_highlighted = True
-        elif select.fell:
-            display.selection_changed = True
-        elif cycle_menu.fell:
-            display.display_selector_option = True
+        if display.in_options:
+            if cycle.fell:
+                display.cycle_highlighted = True
+            elif select.fell:
+                display.selection_changed = True
+
+        if cycle_menu.fell:
+            if display.display_selector_option >= display.max_index_options:
+                display.display_selector_option = 0
+            else:
+                display.display_selector_option += 1
         elif forfeit.fell:
             display.exit_program = True
-
+            control_led.disable()
+            print("Program is ending in 1 second...")
+            await asyncio.sleep(1)
+            sys.exit()
         await asyncio.sleep(0.05)
 
 

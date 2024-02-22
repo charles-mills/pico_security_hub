@@ -6,7 +6,8 @@ class VisibleMenu:
 
         self.main_menu_highlights = ["audio", "motion", "LED", "temperature"]  # Options in main menu
         self.audio_menu_highlights = ["mute", "low", "back"]  # Options in audio menu
-        self.motion_menu_highlights = ["enabled", "publish", "re-initialise", "sensitive", "back"]  # Options in motion menu
+        self.motion_menu_highlights = ["enabled", "publish", "re-initialise", "sensitive",
+                                       "back"]  # Options in motion menu
         self.led_menu_highlights = ["enabled", "back"]  # Options in LED menu
         self.temperature_menu_highlights = ["publish", "back"]  # Options in temperature menu
 
