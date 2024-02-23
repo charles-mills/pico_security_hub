@@ -1,6 +1,9 @@
 import asyncio
 import sys
 from pico_security_hub.config import boot
+from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import subscriptions
+from pico_security_hub.config import networking
 from pico_security_hub.sensors import motion_detection
 from pico_security_hub.sensors import hardware_temp
 from pico_security_hub.sensors import local_temp
@@ -9,11 +12,11 @@ from pico_security_hub.controllers import control_buttons
 from pico_security_hub.controllers import control_display
 from pico_security_hub.controllers import control_led
 from pico_security_hub.controllers import control_buzzer
-from pico_security_hub.config import config_vars as master
-from pico_security_hub.config import subscriptions
 
 
 async def start_offline():
+    master.get_vars()
+    
     print("\tNetworking is disabled, only the display will be active.")
     buttons_task = asyncio.create_task(control_buttons.main())
     display_task = asyncio.create_task(control_display.main())
@@ -23,6 +26,9 @@ async def start_offline():
 
 async def start_online():
     boot.main()
+    master.get_vars()
+    networking.publ_initial_config()
+    
     # Start the subscription task
     subscription_task = asyncio.create_task(subscriptions.main())
     # Start the motion detection sensor

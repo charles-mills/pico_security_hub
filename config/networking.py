@@ -25,9 +25,9 @@ def list_feeds(mqtt_l):
     print("\t" + "-" * 40)
 
 
-def publ_initial_config(mqtt_l):
+def publ_initial_config():
     for key in master.config_dict:
-        publ_data(mqtt_l, key, master.bool_to_str[master.config_dict[key]], True)
+        publ_data(mqtt_link, key, master.bool_to_str[master.config_dict[key]], True)
 
 
 def connect_adafruit(wifi_links, subscription_list):
@@ -59,7 +59,6 @@ def main():
     wifi_links = wifi_obj.connectToWiFi()
 
     mqtt_link = connect_adafruit(wifi_links, subscription_list)
-    publ_initial_config(mqtt_link)
 
 
 if __name__ == "__main__":

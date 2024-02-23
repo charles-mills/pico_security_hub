@@ -1,3 +1,5 @@
+import json
+
 master_loop = True
 networking_enabled = True
 
@@ -21,3 +23,15 @@ config_dict = {
 
 def toggle_var(var):
     config_dict[var] = not config_dict[var]
+
+
+def get_vars():
+    global config_dict
+
+    with open("pico_security_hub/config/saved_vars.json", "r") as f:
+        config_dict = json.loads(f.read())
+
+
+def write_config():
+    with open("pico_security_hub/config/saved_vars.json", "w") as f:
+        f.write(json.dumps(config_dict))

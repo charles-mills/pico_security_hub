@@ -40,11 +40,12 @@ async def play_tune(tune):
 
 async def main():
     while True:
-        if not master.config_dict["audio_mute"]:
-            for tune in queue_tunes:
-                if queue_tunes[tune]:
-                    await play_tune(tune)
-                    queue_tunes[tune] = False
+        for tune in queue_tunes:
+            if queue_tunes[tune] and not master.config_dict["audio_mute"]::
+                await play_tune(tune)
+                queue_tunes[tune] = False
+            elif queue_tunes[tune]:
+                queue_tunes[tune] = False
         await asyncio.sleep(0.1)
 
 

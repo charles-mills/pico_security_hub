@@ -17,6 +17,7 @@ async def get_data():
         while update is not None:
             config_var = update[0].split("crjm/feeds/", 1)[1]  # Remove the /feeds/ part of the string
             master.config_dict[config_var] = str_to_bool[update[1]]
+            master.write_config()
             update = networking.mqtt_link.checkForUpdates()
 
         await asyncio.sleep(10)
