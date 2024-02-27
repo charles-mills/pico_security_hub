@@ -4,22 +4,15 @@ class VisibleMenu:
         self.current_option = "main"
         self.current_highlighted = "audio"
 
-        self.main_menu_highlights = ["audio", "motion", "LED", "temperature"]  # Options in main menu
-        self.audio_menu_highlights = ["mute", "low", "back"]  # Options in audio menu
-        self.motion_menu_highlights = ["enabled", "publish", "re-initialise", "sensitive",
-                                       "back"]  # Options in motion menu
-        self.led_menu_highlights = ["enabled", "back"]  # Options in LED menu
-        self.temperature_menu_highlights = ["publish", "back"]  # Options in temperature menu
-
         self.visible_highlights = []
         self.highlighted_index = 0
 
         self.option_to_defaults = {
-            "main": self.main_menu_highlights,
-            "audio": self.audio_menu_highlights,
-            "motion": self.motion_menu_highlights,
-            "LED": self.led_menu_highlights,
-            "temperature": self.temperature_menu_highlights
+            "main": ["audio", "motion", "LED", "temperature"],
+            "audio": ["mute", "low", "back"],
+            "motion": ["enabled", "publish", "re-initialise", "sensitive", "back"],
+            "LED": ["enabled", "back"],
+            "temperature": ["publish", "back"],
         }
 
     def add_arrow_to_highlight(self):
@@ -60,17 +53,9 @@ class VisibleMenu:
         return self.option_to_defaults[self.current_option][:maximum_visible]
 
     def cycle_highlighted(self):
-        try:
-            self.highlighted_index = self.option_to_defaults[self.current_option].index(self.current_highlighted)
-
-            if self.highlighted_index + 1 >= len(self.option_to_defaults[self.current_option]):
-                self.highlighted_index = 0
-            else:
-                self.highlighted_index += 1
-        except IndexError:
-            self.highlighted_index = 0
-
-        self.current_highlighted = self.option_to_defaults[self.current_option][self.highlighted_index]
+        options = self.option_to_defaults[self.current_option]
+        self.highlighted_index = (self.highlighted_index + 1) % len(options)
+        self.current_highlighted = options[self.highlighted_index]
 
 
 def capitalise_first(string):

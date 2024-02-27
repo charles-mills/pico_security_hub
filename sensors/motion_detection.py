@@ -52,7 +52,7 @@ async def check_motion():
     expected_range_cm -= expected_range_cm / 10
 
     while True:
-        if master.master_loop and master.config_dict["motion_enabled"]:
+        if master.MASTER_LOOP and master.config_dict["motion_enabled"]:
             allowed_flags = 5
 
             if master.config_dict["motion_sensitive"]:

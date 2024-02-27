@@ -35,7 +35,7 @@ async def publ_local_data(dht11):
     global local_humidity
 
     while True:
-        if master.master_loop and master.config_dict["temperature_publish"]:
+        if master.MASTER_LOOP and master.config_dict["temperature_publish"]:
             try:
                 local_humidity = dht11.getHumidity()
                 local_temp = dht11.getTemperature()

@@ -4,18 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/data/log.txt" afterDir="false" />
+    <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="Add additional doc strings and error handling">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/boot.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/boot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/config_vars.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_vars.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/networking.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/networking.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/publishing.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/publishing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/saved_vars.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/saved_vars.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/subscriptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/subscriptions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/control_buttons.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_buttons.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/control_buzzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_buzzer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/display_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/display_class.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sensors/hardware_temp.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/hardware_temp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sensors/local_temp.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/local_temp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sensors/motion_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/motion_detection.py" afterDir="false" />
     </list>
@@ -34,8 +29,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;charles-mills&quot;
+  }
+}</component>
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: []
+}</component>
   <component name="GitLabMergeRequestsSettings">{}</component>
-  <component name="GithubPullRequestsUISettings">{}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/charles-mills/pico_security_hub.git&quot;,
+    &quot;accountId&quot;: &quot;ad1f47a3-e4f0-4980-9686-cbb9349ee041&quot;
+  }
+}</component>
   <component name="MicroPythonDevices" devicePath="COM3" autoDetectDevicePath="false" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -45,26 +54,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "ToolWindowGit.ShowToolbar": "false",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Charl/OneDrive/Documents/GitHub/pico_security_hub",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.stylelint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.stylelint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;ToolWindowGit.ShowToolbar&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Charl/OneDrive/Documents/GitHub/pico_security_hub&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Charl\OneDrive\Documents\GitHub\pico_security_hub\data" />
@@ -117,6 +126,7 @@
       <workItem from="1709061532011" duration="9000" />
       <workItem from="1709061549961" duration="2177000" />
       <workItem from="1709063973710" duration="1498000" />
+      <workItem from="1709065502666" duration="1251000" />
     </task>
     <task id="LOCAL-00001" summary="Make options menu selection dynamic">
       <option name="closed" value="true" />
@@ -126,7 +136,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708433605321</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add additional doc strings and error handling">
+      <option name="closed" value="true" />
+      <created>1709065737246</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1709065737246</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,6 +164,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Make options menu selection dynamic" />
     <MESSAGE value="Add display func" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add display func" />
+    <MESSAGE value="Add additional doc strings and error handling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add additional doc strings and error handling" />
   </component>
 </project>

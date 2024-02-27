@@ -1,7 +1,7 @@
 import json
 
-master_loop = True
-networking_enabled = True
+MASTER_LOOP = True
+NETWORKING_ENABLED = True
 
 
 bool_to_str = {True: "ON", False: "OFF"}
@@ -28,8 +28,8 @@ def log(message):
     :param message: The message to be logged.
     """
 
-    if not networking_enabled:
-        with open('pico_security_hub/data/log.txt', 'a') as f:
+    if not NETWORKING_ENABLED:
+        with open('pico_security_hub/data/log.txt', 'a', encoding='utf-8') as f:
             f.write(message + '\n')
     else:
         print(message)
@@ -44,7 +44,7 @@ def get_vars():
     global config_dict
 
     try:
-        with open("pico_security_hub/data/saved_vars.json", "r") as f:
+        with open("pico_security_hub/data/saved_vars.json", "r", encoding='utf-8') as f:
             config_dict = json.load(f)
     except (FileNotFoundError, IOError):
         print("Could not read the configuration file.")
@@ -52,8 +52,9 @@ def get_vars():
 
 def write_config():
     try:
-        with open("pico_security_hub/data/saved_vars.json", "w") as f:
+        with open("pico_security_hub/data/saved_vars.json", "w", encoding='utf-8') as f:
             json.dump(config_dict, f)
     except Exception as e:
         print(f"An error occurred while writing the configuration file: {e}")
+
 

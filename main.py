@@ -8,7 +8,7 @@ from pico_security_hub.sensors import hardware_temp, local_temp, motion_detectio
 
 async def start_offline():
     """Start the system in offline mode, only initialising the display, buttons, and LED."""
-    master.networking_enabled = False
+    master.NETWORKING_ENABLED = False
     print("\tNetworking is disabled, only the display will be active.")
     await asyncio.gather(control_buttons.main(), control_display.main(), control_led.main())
 
@@ -30,7 +30,7 @@ async def main():
     print("System Starting")
 
     try:
-        if master.networking_enabled:
+        if master.NETWORKING_ENABLED:
             await start_online()
         else:
             await start_offline()
