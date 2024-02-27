@@ -19,6 +19,8 @@ async def get_baseline(loops):
     This function calculates the baseline distance for the motion detection.
 
     :param loops: The number of measurements to take.
+    :return centre_result: The median (not yet sorted) distance of the measurements.
+
     """
     global motion_detected
 
