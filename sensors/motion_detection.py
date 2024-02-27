@@ -15,6 +15,11 @@ sonic_ranger = pulseio.PulseIn(board.GP3)
 
 
 async def get_baseline(loops):
+    """
+    This function calculates the baseline distance for the motion detection.
+
+    :param loops: The number of measurements to take.
+    """
     global motion_detected
 
     master.motion_enabled = False
@@ -35,6 +40,11 @@ async def get_baseline(loops):
 
 
 async def check_motion():
+    """
+    This function continuously checks for motion and updates the `motion_detected` variable.
+    It uses the sonic ranger sensor to measure the distance and compares it with the expected range.
+    If the measured distance is less than the expected range, it considers that a motion is detected.
+    """
     global motion_detected
     global expected_range_cm
 
@@ -50,7 +60,7 @@ async def check_motion():
 
             sonic_ranger.clear()
             sonic_ranger.resume(1)
-            await asyncio.sleep(0.25)
+            await asyncio.sleep(0.1)
             sonic_ranger.pause()
 
             actual_dist_cm = sonic_ranger[0] * 0.017
@@ -59,7 +69,7 @@ async def check_motion():
                 motion_detection_flags += 1
                 control_led.alarm_active = True
                 motion_detected = True
-                control_buzzer.queue_tunes["alarm"] = True
+                control_buzzer.queue.append("alarm")
             elif actual_dist_cm > expected_range_cm and motion_detection_flags > 0:
                 motion_detection_flags -= 1
                 control_led.alarm_active = False
@@ -83,10 +93,17 @@ async def check_motion():
 async def main():
     global expected_range_cm
 
-    baseline = await asyncio.gather(asyncio.create_task(get_baseline(10)))
-    expected_range_cm = baseline[0]
+    try:
+        baseline = await asyncio.gather(asyncio.create_task(get_baseline(10)))
+        expected_range_cm = baseline[0]
+    except Exception as e:
+        print(f"An error occurred while getting the baseline: {e}")
+        return
 
-    await asyncio.gather(asyncio.create_task(check_motion()))
+    try:
+        await asyncio.gather(asyncio.create_task(check_motion()))
+    except Exception as e:
+        print(f"An error occurred while checking for motion: {e}")
 
 
 if __name__ == "__main__":

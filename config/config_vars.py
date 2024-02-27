@@ -4,11 +4,8 @@ master_loop = True
 networking_enabled = True
 
 
-bool_to_str = {
-    True: "ON",
-    False: "OFF"
-}
-
+bool_to_str = {True: "ON", False: "OFF"}
+str_to_bool = {"ON": True, "OFF": False}
 
 config_dict = {
     "audio_mute": False,
@@ -21,17 +18,42 @@ config_dict = {
 }
 
 
+def log(message):
+    """
+    Function to log messages to the console or the log.txt file.
+    Messages are not written to file if networking is enabled as this
+    may suggest the file is being run on an external device, preventing
+    the file from being written to.
+
+    :param message: The message to be logged.
+    """
+
+    if not networking_enabled:
+        with open('pico_security_hub/data/log.txt', 'a') as f:
+            f.write(message + '\n')
+    else:
+        print(message)
+
+
 def toggle_var(var):
-    config_dict[var] = not config_dict[var]
+    if var in config_dict:
+        config_dict[var] = not config_dict[var]
 
 
 def get_vars():
     global config_dict
 
-    with open("pico_security_hub/config/saved_vars.json", "r") as f:
-        config_dict = json.loads(f.read())
+    try:
+        with open("pico_security_hub/data/saved_vars.json", "r") as f:
+            config_dict = json.load(f)
+    except (FileNotFoundError, IOError):
+        print("Could not read the configuration file.")
 
 
 def write_config():
-    with open("pico_security_hub/config/saved_vars.json", "w") as f:
-        f.write(json.dumps(config_dict))
+    try:
+        with open("pico_security_hub/data/saved_vars.json", "w") as f:
+            json.dump(config_dict, f)
+    except Exception as e:
+        print(f"An error occurred while writing the configuration file: {e}")
+

@@ -8,20 +8,15 @@ mqtt_link = None
 
 
 def title(string):
-    string = list(string)
-    string[0] = string[0].upper()
-
-    string = "".join(string)
-
-    string = re.sub(r"([A-Z])", r" \1", string).split()
-    return string
+    if string:
+        return string[0].upper() + string[1:].lower()
+    return ""
 
 
 def list_feeds(mqtt_l):
-    feeds = mqtt_l.subscriptions
+    feeds = ["\tSubscribed to  : " + feed for feed in mqtt_l.subscriptions]
     print("\t" + "-" * 40)
-    for feed in feeds:
-        print("\tSubscribed to  : " + feed)
+    print("\n".join(feeds))
     print("\t" + "-" * 40)
 
 
@@ -31,20 +26,22 @@ def publ_initial_config():
 
 
 def connect_adafruit(wifi_links, subscription_list):
-    print("\tConnection to Adafruit Requested")
+    try:
+        print("\tConnection to Adafruit Requested")
 
-    mqtt_obj = mqtt.Mqtt(
-        wifi_links[1], wifi_links[0], subscription_list)
-    mqtt_obj.connection()
-    print("\tConnection to Adafruit Established")
-    return mqtt_obj
+        mqtt_obj = mqtt.Mqtt(
+            wifi_links[1], wifi_links[0], subscription_list)
+        mqtt_obj.connection()
+        print("\tConnection to Adafruit Established")
+        return mqtt_obj
+    except Exception as e:
+        print(f"An error occurred while connecting to Adafruit: {e}")
 
 
 def publ_data(mqtt_l, publication, value, mute=False):
     mqtt_l.publishData(publication, value)
     if not mute:
-        print(f"\tPublished {title(publication)}: " +
-              str(value) + " to /feeds/" + publication)
+        print(f"\tPublished {title(publication)}: {value} to /feeds/{publication}")
 
 
 def main():
@@ -63,3 +60,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

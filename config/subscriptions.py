@@ -6,21 +6,22 @@ from pico_security_hub.controllers import control_display
 
 
 async def get_data():
-    str_to_bool = {
-        "ON": True,
-        "OFF": False
-    }
-
     while True:
+        updates = []
         update = networking.mqtt_link.checkForUpdates()
 
-        while update is not None:
-            config_var = update[0].split("crjm/feeds/", 1)[1]  # Remove the /feeds/ part of the string
-            master.config_dict[config_var] = str_to_bool[update[1]]
-            master.write_config()
+        while update:
+            """ Remove the /feeds/ part of the string to get the config variable name. """
+            config_var = update[0].split("crjm/feeds/", 1)[1]
+            updates.append((config_var, master.str_to_bool[update[1]]))
             update = networking.mqtt_link.checkForUpdates()
 
-        await asyncio.sleep(10)
+        if updates:
+            for config_var, value in updates:
+                master.config_dict[config_var] = value
+            master.write_config()
+
+        await asyncio.sleep(5)
 
 
 async def main():

@@ -1,70 +1,49 @@
 import asyncio
 import sys
-from pico_security_hub.config import boot
-from pico_security_hub.config import config_vars as master
-from pico_security_hub.config import subscriptions
-from pico_security_hub.config import networking
-from pico_security_hub.sensors import motion_detection
-from pico_security_hub.sensors import hardware_temp
-from pico_security_hub.sensors import local_temp
-from pico_security_hub.sensors import uptime
-from pico_security_hub.controllers import control_buttons
-from pico_security_hub.controllers import control_display
-from pico_security_hub.controllers import control_led
-from pico_security_hub.controllers import control_buzzer
+
+from pico_security_hub.config import boot, config_vars as master, networking, subscriptions
+from pico_security_hub.controllers import control_buzzer, control_buttons, control_display, control_led
+from pico_security_hub.sensors import hardware_temp, local_temp, motion_detection, uptime
 
 
 async def start_offline():
-    master.get_vars()
-    
+    """Start the system in offline mode, only initialising the display, buttons, and LED."""
+    master.networking_enabled = False
     print("\tNetworking is disabled, only the display will be active.")
-    buttons_task = asyncio.create_task(control_buttons.main())
-    display_task = asyncio.create_task(control_display.main())
-    led_task = asyncio.create_task(control_led.main())
-    await asyncio.gather(buttons_task, display_task, led_task)
+    await asyncio.gather(control_buttons.main(), control_display.main(), control_led.main())
 
 
 async def start_online():
-    boot.main()
-    master.get_vars()
-    networking.publ_initial_config()
-    
-    # Start the subscription task
-    subscription_task = asyncio.create_task(subscriptions.main())
-    # Start the motion detection sensor
-    motion_task = asyncio.create_task(motion_detection.main())
-    # Start the hardware temperature sensor
-    hardware_task = asyncio.create_task(hardware_temp.main())
-    # Start the local temperature and humidity sensor
-    local_task = asyncio.create_task(local_temp.main())
-    # Start the buttons task to control the display
-    buttons_task = asyncio.create_task(control_buttons.main())
-    # Start the display task
-    display_task = asyncio.create_task(control_display.main())
-    # Start the LED task
-    led_task = asyncio.create_task(control_led.main())
-    # Start monitoring uptime task
-    uptime_task = asyncio.create_task(uptime.main())
-    # Start the buzzer task to output sound
-    buzzer_task = asyncio.create_task(control_buzzer.main())
+    """Start the system in online mode, initialising all components."""
+    boot.main()  # Run the boot sequence, configuring networking in the process.
+    master.get_vars()  # Fetch configuration variables from the local JSON file.
+    networking.publ_initial_config()  # Publish the initial configuration to the MQTT broker.
+    control_buzzer.queue.append("start")   # Queue the start-up tune if the buzzer is enabled.
 
-    control_buzzer.queue_tunes["start"] = True
-
-    await asyncio.gather(subscription_task, motion_task, hardware_task,
-                         local_task, buttons_task, display_task, led_task, uptime_task, buzzer_task)
+    await asyncio.gather(subscriptions.main(), motion_detection.main(), hardware_temp.main(),
+                         local_temp.main(), control_buttons.main(), control_display.main(),
+                         control_led.main(), uptime.main(), control_buzzer.main())
 
 
 async def main():
+    """Main function to start the system."""
+    print("System Starting")
+
     try:
         if master.networking_enabled:
             await start_online()
         else:
             await start_offline()
-    except RuntimeError:
+    except RuntimeError:  # Occurs when the system is unable to connect to the MQTT broker.
+        print("RuntimeError occurred, falling back to offline mode.")
         await start_offline()
-        
+    except Exception as e:  # Catch-all exception to prevent the system from crashing.
+        print(f"Unexpected error occurred: {e}, falling back to offline mode.")
+        await start_offline()
+    else:
+        print("System started successfully.")
+
 
 if __name__ == "__main__":
-    print("System Starting")
     sys.exit(asyncio.run(main()))
-    
+

@@ -5,8 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config/saved_vars.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/boot.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/boot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/config_vars.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_vars.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/networking.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/networking.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/publishing.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/publishing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/saved_vars.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/saved_vars.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/subscriptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/subscriptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/control_buttons.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_buttons.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/control_buzzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_buzzer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sensors/local_temp.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/local_temp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sensors/motion_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/motion_detection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +34,8 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitLabMergeRequestsSettings">{}</component>
+  <component name="GithubPullRequestsUISettings">{}</component>
   <component name="MicroPythonDevices" devicePath="COM3" autoDetectDevicePath="false" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -32,24 +45,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;ToolWindowGit.ShowToolbar&quot;: &quot;false&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/As2/pico_security_hub&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.micropython.configurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ToolWindowGit.ShowToolbar": "false",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/Charl/OneDrive/Documents/GitHub/pico_security_hub",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.stylelint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.stylelint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Charl\OneDrive\Documents\GitHub\pico_security_hub\data" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Flash main.py" type="MicroPythonConfigurationType" factoryName="MicroPython" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/main.py" runReplOnSuccess="no">
       <module name="pico_security_hub" />
@@ -62,6 +82,14 @@
         <item itemvalue="MicroPython.Flash main.py" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-db596990d856-JavaScript-PY-241.13688.16" />
+        <option value="bundled-python-sdk-92048412f40e-12e42760b4d0-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.13688.16" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -86,6 +114,9 @@
       <workItem from="1708631569066" duration="1701000" />
       <workItem from="1708705911580" duration="16000" />
       <workItem from="1708706150798" duration="884000" />
+      <workItem from="1709061532011" duration="9000" />
+      <workItem from="1709061549961" duration="2177000" />
+      <workItem from="1709063973710" duration="1498000" />
     </task>
     <task id="LOCAL-00001" summary="Make options menu selection dynamic">
       <option name="closed" value="true" />

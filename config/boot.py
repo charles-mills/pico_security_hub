@@ -7,6 +7,9 @@ from pico_security_hub.controllers import control_led
 
 
 def get_skull_lines():
+    """
+    Returns a list of strings representing a skull image.
+    """
     scary_skull = """
       _____
      /     \\
@@ -15,11 +18,20 @@ def get_skull_lines():
      \\     /
       \\___/
     """
-
     return scary_skull.strip().split('\n')
 
 
 def display_welcome_text(display, t_label, s_label, repeat=4, pause=0.05):
+    """
+    Displays a welcome text animation on the given display.
+
+    Parameters:
+    display (grove_display.BitmapDisplay): The display to use.
+    t_label (grove_display.Label): The label to use for the title.
+    s_label (grove_display.Label): The label to use for the subtitle.
+    repeat (int): The number of times to repeat the animation.
+    pause (float): The pause between each animation frame.
+    """
     for x in range(4):
         display.updateLabelText(t_label, "WELCOME")
         time.sleep(pause)
@@ -44,6 +56,12 @@ def display_welcome_text(display, t_label, s_label, repeat=4, pause=0.05):
 
 
 def end_components(display):
+    """
+    Ends the display components.
+
+    Parameters:
+    display (grove_display.BitmapDisplay): The display to use.
+    """
     time.sleep(0.25)
     display.clearScreen()
     time.sleep(0.25)
@@ -51,41 +69,34 @@ def end_components(display):
 
 
 def main():
+    """
+    Main function to start the system.
+    """
     display = grove_display.BitmapDisplay(1)
-
     title = display.addLabel(23, 25, 2, "")
     label_1 = display.addLabel(8, 44, 1, "")
     control_led.neo.setBlue(20)
-    
+
     y = 0
-
-    skull_dis = []
-
-    for line in get_skull_lines():
-        skull_dis.append(display.addLabel(0, y, 1, line))
-        y += 10
+    skull_dis = [display.addLabel(0, y + i * 10, 1, line) for i, line in enumerate(get_skull_lines())]
 
     time.sleep(0.1)
-    
+
     for x in skull_dis:
         display.updateLabelText(x, "")
-    
+
     display_welcome_text(display, title, label_1)
-    
+
+    status_message = "Connection Success"
     try:
         networking.main()
         control_led.neo.setGreen(20)
-        display.updateLabelText(label_1, "Connection Success")
     except AttributeError:
-        print("Network Connection Failed")
+        status_message = "Network Connection Failed"
         control_led.neo.setRed(20)
-        display.updateLabelText(label_1, "Connection Failed")
-        time.sleep(0.75)
-        end_components(display)
         raise RuntimeError
-        
+
+    display.updateLabelText(label_1, status_message)
+    print(status_message)
     end_components(display)
 
-
-if __name__ == "__main__":
-    main()
