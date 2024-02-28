@@ -24,10 +24,10 @@ async def get_baseline(loops):
     """
     global motion_detected
 
-    master.motion_enabled = False
+    master.config_dict["motion_enabled"] = False
     results = []
 
-    for x in range(loops):
+    for _ in range(loops):
         sonic_ranger.clear()
         sonic_ranger.resume(1)
         await asyncio.sleep(0.1)

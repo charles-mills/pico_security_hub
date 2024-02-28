@@ -56,7 +56,6 @@ def push_changed_data(display, title, label_1, label_2, label_3, new_data):
     :param label_3: The third label.
     :param new_data: The new data to be displayed.
     """
-
     if has_data_changed(new_data):
         display.updateLabelText(title, new_data[0])
         display.updateLabelText(label_1, new_data[1])
@@ -186,7 +185,6 @@ def confirm_change(var, menu, display, label_1, label_2, label_3):
     :param var: The variable that has been changed.
     :param menu: The menu object.
     :param display: The display object.
-    :param title: The title label.
     :param label_1: The first label.
     :param label_2: The second label.
     :param label_3: The third label.
@@ -324,7 +322,7 @@ async def respond_to_buttons(display, menu, title, label_1, label_2, label_3):
 
 def set_title_text(display, title, menu):
     """
-    Sets the title of the display to the current menu.
+    Displays the current menu and the number of options in the menu
 
     :param display: The display object.
     :param title: The title label.
@@ -334,6 +332,21 @@ def set_title_text(display, title, menu):
     menu_title = f"{menu_title} Menu {menu.highlighted_index + 1}/{len(menu.option_to_defaults[menu.current_option])}"
 
     display.updateLabelText(title, menu_title)
+
+
+def update_display_labels(display, labels, to_display):
+    """
+    Updates the display labels with the provided text.
+
+    :param display: The display object.
+    :param labels: The labels to be updated.
+    :param to_display: The text to be displayed.
+    """
+    for i, label in enumerate(labels):
+        try:
+            display.updateLabelText(label, to_display[i])
+        except IndexError:
+            display.updateLabelText(label, "")
 
 
 def display_visible_highlights(display, menu, title, label_1, label_2, label_3):
@@ -354,18 +367,8 @@ def display_visible_highlights(display, menu, title, label_1, label_2, label_3):
     to_display = menu.get_current_list()
     set_title_text(display, title, menu)
 
-    try:
-        display.updateLabelText(label_1, to_display[0])
-    except IndexError:
-        display.updateLabelText(label_1, "")
-    try:
-        display.updateLabelText(label_2, to_display[1])
-    except IndexError:
-        display.updateLabelText(label_2, "")
-    try:
-        display.updateLabelText(label_3, to_display[2])
-    except IndexError:
-        display.updateLabelText(label_3, "")
+    labels = [label_1, label_2, label_3]
+    update_display_labels(display, labels, to_display)
 
     info["last_visible_highlights"] = to_display
 

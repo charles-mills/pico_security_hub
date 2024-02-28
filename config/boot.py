@@ -32,7 +32,7 @@ def display_welcome_text(display, t_label, s_label, repeat=4, pause=0.05):
     repeat (int): The number of times to repeat the animation.
     pause (float): The pause between each animation frame.
     """
-    for x in range(4):
+    for _ in range(4):
         display.updateLabelText(t_label, "WELCOME")
         time.sleep(pause)
         display.updateLabelText(t_label, "W$LCOME")
