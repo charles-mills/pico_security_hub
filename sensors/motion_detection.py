@@ -89,7 +89,8 @@ async def check_motion():
         if master.MASTER_LOOP and master.config_dict["motion_enabled"]:
             allowed_flags = check_motion_sensitive()
             actual_dist_cm = await measure_distance()
-            motion_detection_flags = handle_motion_detection(actual_dist_cm, motion_detection_flags)
+            motion_detection_flags = handle_motion_detection(
+                actual_dist_cm, motion_detection_flags)
             motion_detection_flags = await handle_motion_publishing(motion_detection_flags, allowed_flags)
         await asyncio.sleep(0.5)
 
@@ -113,7 +114,8 @@ async def get_baseline(loops):
         except IndexError:
             pass
 
-    centre_result = results[int(loops / 2)]  # This calculation should be improved by calculating median
+    # This calculation should be improved by calculating median
+    centre_result = results[int(loops / 2)]
     print(f"Motion Detection: Baseline Test Completed - {centre_result}cm")
     master.config_dict["motion_enabled"] = True
     return centre_result
