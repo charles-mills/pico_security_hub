@@ -46,19 +46,17 @@ async def trigger_alarm():
 async def send_colour(time=0.1):
     global colour_in_queue
 
-    if led_active():
-        if not alarm_active:
-            neo.setMagenta(20)
-            colour_in_queue = True
-            await asyncio.sleep(time)
-            colour_in_queue = False
+    if led_active() and not alarm_active:
+        neo.setMagenta(20)
+        colour_in_queue = True
+        await asyncio.sleep(time)
+        colour_in_queue = False
 
 
 async def idle():
     while True:
-        if led_active():
-            if not colour_in_queue and not alarm_active:
-                neo.setWhite(10)
+        if led_active() and not colour_in_queue and not alarm_active:
+            neo.setWhite(10)
         await asyncio.sleep(0.25)
 
 

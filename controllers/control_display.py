@@ -148,6 +148,20 @@ def motion_detection_menu(display, title, label_1, label_2, label_3):
     push_changed_data(display, title, label_1, label_2, label_3, new_data)
 
 
+def select_menu(display, title, label_1, label_2, label_3, menu, menus):
+    highlights_index = menus.index(display_visible_highlights)
+
+    if settings["loop"]:
+        if info["display_selector_option"] == highlights_index:
+            if (info["last_visible_highlights"] != menu.get_current_list or
+                    info["last_selection_option"] != info["display_selector_option"]):
+                display_visible_highlights(
+                    display, menu, title, label_1, label_2, label_3)
+        else:
+            menus[info["display_selector_option"]](display, title, label_1, label_2, label_3)
+        info["last_selection_option"] = info["display_selector_option"]
+
+
 async def display_menus(display, menu, title, label_1, label_2, label_3):
     """
     Continuously displays the selected menu.
@@ -163,22 +177,46 @@ async def display_menus(display, menu, title, label_1, label_2, label_3):
 
     menus = [motion_detection_menu, warnings_menu,
              flood_detection_menu, fire_detection_menu, display_visible_highlights]
-    highlights_index = menus.index(display_visible_highlights)
 
     while True:
-        if settings["loop"]:
-            if info["display_selector_option"] == highlights_index:
-                if (info["last_visible_highlights"] != menu.get_current_list or
-                        info["last_selection_option"] != info["display_selector_option"]):
-                    display_visible_highlights(
-                        display, menu, title, label_1, label_2, label_3)
-            else:
-                menus[info["display_selector_option"]](display, title, label_1, label_2, label_3)
-            info["last_selection_option"] = info["display_selector_option"]
+        select_menu(display, title, label_1, label_2, label_3, menu, menus)
         await asyncio.sleep(SLEEP_TIME)
 
 
-def confirm_change(var, menu, display, label_1, label_2, label_3):
+def get_confirm_change_text(var):
+    """
+    Gets the confirmation message for a variable change.
+
+    :param var: The variable that has been changed.
+    :return: The confirmation message.
+    """
+    if var:
+        return "Option is now True"
+    return "Option is now False"
+
+
+def update_confirm_change(menu, text, display, label_1, label_2, label_3):
+    """
+    Updates the display with the confirmation message.
+
+    :param menu: The menu object.
+    :param text: The confirmation message.
+    :param display: The display object.
+    :param label_1: The first label.
+    :param label_2: The second label.
+    :param label_3: The third label.
+    """
+    selection_index = menu.get_visible_options().index(menu.current_highlighted)
+
+    if selection_index == 0:
+        display.updateLabelText(label_1, text)
+    elif selection_index == 1:
+        display.updateLabelText(label_2, text)
+    elif selection_index == 2:
+        display.updateLabelText(label_3, text)
+
+
+async def confirm_change(var, menu, display, label_1, label_2, label_3):
     """
     Confirms the change of a variable and updates the display.
 
@@ -189,19 +227,15 @@ def confirm_change(var, menu, display, label_1, label_2, label_3):
     :param label_2: The second label.
     :param label_3: The third label.
     """
-    selection_index = menu.get_visible_options().index(menu.current_highlighted)
+    global settings
 
-    if var:
-        text = "Option is now True"
-    else:
-        text = "Option is now False"
+    settings["loop"] = False
 
-    if selection_index == 0:
-        display.updateLabelText(label_1, text)
-    elif selection_index == 1:
-        display.updateLabelText(label_2, text)
-    elif selection_index == 2:
-        display.updateLabelText(label_3, text)
+    text = get_confirm_change_text(var)
+    update_confirm_change(menu, text, display, label_1, label_2, label_3)
+
+    await asyncio.sleep(0.5)
+    settings["loop"] = True
 
 
 def pause_display(display, title, label_1, label_2, label_3, text="Paused"):
@@ -239,8 +273,8 @@ async def toggle_var_and_confirm(var, menu, display, label_1, label_2, label_3):
     master.toggle_var(var)
     networking.publ_data(networking.mqtt_link, var,
                          master.adafruit_conversion_dict[master.config_dict[var]], True)
-    confirm_change(master.config_dict[var], menu,
-                   display, label_1, label_2, label_3)
+    await confirm_change(master.config_dict[var], menu,
+                         display, label_1, label_2, label_3)
     master.write_config()
     await asyncio.sleep(SLEEP_TIME)
 
@@ -373,11 +407,12 @@ def display_visible_highlights(display, menu, title, label_1, label_2, label_3):
     info["last_visible_highlights"] = to_display
 
 
-async def main():
+def configure_display():
     """
-    The main function that runs the display and responds to button presses.
+    Configures the display.
+
+    :return: The display object and associated labels.
     """
-    menu = display_class.VisibleMenu()
     display = grove_display.BitmapDisplay(1)
 
     title = display.addLabel(8, 0, 1, "")
@@ -385,6 +420,16 @@ async def main():
     label_2 = display.addLabel(8, 30, 1, "")
     label_3 = display.addLabel(8, 45, 1, "")
 
+    return display, title, label_1, label_2, label_3
+
+
+async def main():
+    """
+    The main function that runs the display and responds to button presses.
+    """
+    menu = display_class.VisibleMenu()
+
+    display, title, label_1, label_2, label_3 = configure_display()
     tasks = [display_menus(display, menu, title, label_1, label_2, label_3),
              respond_to_buttons(display, menu, title, label_1, label_2, label_3)]
 
