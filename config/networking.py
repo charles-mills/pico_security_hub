@@ -22,7 +22,8 @@ def list_feeds(mqtt_l):
 
 def publ_initial_config():
     for key in master.config_dict:
-        publ_data(mqtt_link, key, master.adafruit_conversion_dict[master.config_dict[key]], True)
+        publ_data(
+            mqtt_link, key, master.adafruit_conversion_dict[master.config_dict[key]], True)
 
 
 def connect_adafruit(wifi_links, subscription_list):
@@ -41,7 +42,8 @@ def connect_adafruit(wifi_links, subscription_list):
 def publ_data(mqtt_l, publication, value, mute=False):
     mqtt_l.publishData(publication, value)
     if not mute:
-        print(f"\tPublished {title(publication)}: {value} to /feeds/{publication}")
+        print(
+            f"\tPublished {title(publication)}: {value} to /feeds/{publication}")
 
 
 def main():
@@ -60,4 +62,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

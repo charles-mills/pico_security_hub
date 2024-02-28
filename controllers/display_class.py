@@ -36,11 +36,13 @@ class VisibleMenu:
 
     def set_current_option(self, option):
         self.current_option = option
-        self.set_current_highlighted(self.option_to_defaults[self.current_option][0])
+        self.set_current_highlighted(
+            self.option_to_defaults[self.current_option][0])
 
     def set_current_highlighted(self, highlighted):
         self.current_highlighted = highlighted
-        self.highlighted_index = self.option_to_defaults[self.current_option].index(highlighted)
+        self.highlighted_index = self.option_to_defaults[self.current_option].index(
+            highlighted)
 
     def get_visible_options(self):
         # scroll through defaults with a max of 3 visible at once

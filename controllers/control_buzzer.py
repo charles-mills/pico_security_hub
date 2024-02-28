@@ -18,7 +18,8 @@ async def play_tune(tune):
     if master.config_dict["audio_low"]:
         tunes[tune]["volume"] = 2
 
-    buzzer.play_tune(tunes[tune]["notes"], 3, tunes[tune]["volume"], tunes[tune]["tempo"])
+    buzzer.play_tune(tunes[tune]["notes"], 3, tunes[tune]
+                     ["volume"], tunes[tune]["tempo"])
 
 
 async def main():
