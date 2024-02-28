@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="Add additional doc strings and error handling">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/boot.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/boot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/control_display.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_display.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sensors/motion_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/motion_detection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -130,7 +128,7 @@
       <workItem from="1709138915474" duration="289000" />
       <workItem from="1709139216648" duration="2848000" />
       <workItem from="1709151763654" duration="84000" />
-      <workItem from="1709151861127" duration="4845000" />
+      <workItem from="1709151861127" duration="6399000" />
     </task>
     <task id="LOCAL-00001" summary="Make options menu selection dynamic">
       <option name="closed" value="true" />
