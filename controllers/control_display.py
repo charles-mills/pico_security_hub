@@ -171,7 +171,8 @@ async def display_menus(display, menu, title, label_1, label_2, label_3):
             fire_detection_menu(display, title, label_1, label_2, label_3)
         elif display_selector_option == 4:
             if last_visible_highlights != menu.get_current_list or last_selection_option != display_selector_option():
-                display_visible_highlights(display, menu, title, label_1, label_2, label_3)
+                display_visible_highlights(
+                    display, menu, title, label_1, label_2, label_3)
         await asyncio.sleep(0.1)
 
     last_selection_option = display_selector_option
@@ -238,8 +239,10 @@ async def toggle_var_and_confirm(var, menu, display, title, label_1, label_2, la
     :param label_3: The third label.
     """
     master.toggle_var(var)
-    networking.publ_data(networking.mqtt_link, var, master.adafruit_conversion_dict[master.config_dict[var]], True)
-    confirm_change(master.config_dict[var], menu, display, title, label_1, label_2, label_3)
+    networking.publ_data(networking.mqtt_link, var,
+                         master.adafruit_conversion_dict[master.config_dict[var]], True)
+    confirm_change(master.config_dict[var], menu,
+                   display, title, label_1, label_2, label_3)
     master.write_config()
     await asyncio.sleep(0.1)
 
@@ -256,7 +259,8 @@ async def motion_re_initialise(display, title, label_1, label_2, label_3):
     """
     global loop
 
-    pause_display(display, title, label_1, label_2, label_3, "Re-initialising...")
+    pause_display(display, title, label_1, label_2,
+                  label_3, "Re-initialising...")
     master.motion_detection_enabled = False
     baseline = await asyncio.create_task(motion_detection.get_baseline(15))
     motion_detection.expected_range_cm = (baseline - baseline / 10)

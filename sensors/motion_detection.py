@@ -84,7 +84,8 @@ async def check_motion():
             if motion_detection_flags >= allowed_flags:
                 motion_detection_flags = 0
                 if master.config_dict["motion_publish"]:
-                    networking.publ_data(networking.mqtt_link, "motion_detected", "Motion Detected!", mute=True)
+                    networking.publ_data(
+                        networking.mqtt_link, "motion_detected", "Motion Detected!", mute=True)
                     await publishing.trigger("Motion Detection", "Motion Detected")
                 else:
                     await publishing.trigger("Motion Detection", "Motion Detected", False)

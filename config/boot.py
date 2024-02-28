@@ -78,7 +78,8 @@ def main():
     control_led.neo.setBlue(20)
 
     y = 0
-    skull_dis = [display.addLabel(0, y + i * 10, 1, line) for i, line in enumerate(get_skull_lines())]
+    skull_dis = [display.addLabel(0, y + i * 10, 1, line)
+                 for i, line in enumerate(get_skull_lines())]
 
     time.sleep(0.1)
 
@@ -99,4 +100,3 @@ def main():
     display.updateLabelText(label_1, status_message)
     print(status_message)
     end_components(display)
-
