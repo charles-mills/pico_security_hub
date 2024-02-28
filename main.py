@@ -6,6 +6,11 @@ from pico_security_hub.controllers import control_buzzer, control_buttons, contr
 from pico_security_hub.sensors import hardware_temp, local_temp, motion_detection, uptime
 
 
+""" FOCUS ON OPTIMISATION AND REDUCING LATENCY """
+""" ADD MORE OPTIONS TO THE DISPLAY """
+""" ADD DATA ANALYSIS AND PREDICTION """
+
+
 async def start_offline():
     """Start the system in offline mode, only initialising the display, buttons, and LED."""
     master.NETWORKING_ENABLED = False
@@ -28,6 +33,9 @@ async def start_online():
 async def main():
     """Main function to start the system."""
     print("System Starting")
+
+    if master.DEBUG_MODE:
+        print("\tDebug mode is enabled, no data will be fetched from the MQTT broker and file I/O is disabled.")
 
     try:
         if master.NETWORKING_ENABLED:

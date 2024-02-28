@@ -19,6 +19,8 @@ display_selector_option = 0
 max_index_options = 4
 
 previous_data = None
+last_visible_highlights = None
+last_selection_option = None
 
 # Define a dictionary to map highlight_id to functions
 highlight_id_to_function = {
@@ -52,12 +54,13 @@ def push_changed_data(display, title, label_1, label_2, label_3, new_data):
     :param label_3: The third label.
     :param new_data: The new data to be displayed.
     """
-    for i in range(4):
-        if has_data_changed(new_data[i]):
-            display.updateLabelText(title, new_data[0])
-            display.updateLabelText(label_1, new_data[1])
-            display.updateLabelText(label_2, new_data[2])
-            display.updateLabelText(label_3, new_data[3])
+
+    if has_data_changed(new_data):
+        display.updateLabelText(title, new_data[0])
+        display.updateLabelText(label_1, new_data[1])
+        display.updateLabelText(label_2, new_data[2])
+        display.updateLabelText(label_3, new_data[3])
+
 
 def flood_detection_menu(display, title, label_1, label_2, label_3):
     """
@@ -94,7 +97,8 @@ def fire_detection_menu(display, title, label_1, label_2, label_3):
 
     in_options = False
 
-    new_data = ["Fire Detection", f"Overall Risk: {local_temp.fire_risk()}", f"Temperature: {local_temp.local_temp}°C", f"Humidity: {local_temp.local_humidity}%"]
+    new_data = ["Fire Detection", f"Overall Risk: {local_temp.fire_risk()}", f"Temperature: {local_temp.local_temp}°C",
+                f"Humidity: {local_temp.local_humidity}%"]
     push_changed_data(display, title, label_1, label_2, label_3, new_data)
 
 
@@ -154,6 +158,8 @@ async def display_menus(display, menu, title, label_1, label_2, label_3):
     :param label_2: The second label.
     :param label_3: The third label.
     """
+    global last_selection_option
+
     while True:
         if display_selector_option == 0:
             motion_detection_menu(display, title, label_1, label_2, label_3)
@@ -164,9 +170,11 @@ async def display_menus(display, menu, title, label_1, label_2, label_3):
         elif display_selector_option == 3:
             fire_detection_menu(display, title, label_1, label_2, label_3)
         elif display_selector_option == 4:
-            display_visible_highlights(display, menu, title, label_1, label_2, label_3)
-
+            if last_visible_highlights != menu.get_current_list or last_selection_option != display_selector_option():
+                display_visible_highlights(display, menu, title, label_1, label_2, label_3)
         await asyncio.sleep(0.1)
+
+    last_selection_option = display_selector_option
 
 
 def confirm_change(var, menu, display, title, label_1, label_2, label_3):
@@ -230,10 +238,10 @@ async def toggle_var_and_confirm(var, menu, display, title, label_1, label_2, la
     :param label_3: The third label.
     """
     master.toggle_var(var)
-    networking.publ_data(networking.mqtt_link, var, master.bool_to_str[master.config_dict[var]], True)
+    networking.publ_data(networking.mqtt_link, var, master.adafruit_conversion_dict[master.config_dict[var]], True)
     confirm_change(master.config_dict[var], menu, display, title, label_1, label_2, label_3)
     master.write_config()
-    await asyncio.sleep(0.5)
+    await asyncio.sleep(0.1)
 
 
 async def motion_re_initialise(display, title, label_1, label_2, label_3):
@@ -281,7 +289,7 @@ async def process_selection(display, menu, title, label_1, label_2, label_3):
             await toggle_var_and_confirm(highlight_id,
                                          menu, display, title, label_1, label_2, label_3)
 
-        elif menu.current_highlighted in menu.main_menu_highlights:
+        elif menu.current_highlighted in menu.option_to_defaults["main"]:
             # If in main menu, select the option currently highlighted
             menu.select_current_highlighted()
         else:
@@ -331,6 +339,7 @@ def display_visible_highlights(display, menu, title, label_1, label_2, label_3):
     :param label_3: The third label.
     """
     global in_options
+    global last_visible_highlights
 
     in_options = True
 
@@ -349,6 +358,8 @@ def display_visible_highlights(display, menu, title, label_1, label_2, label_3):
         display.updateLabelText(label_3, to_display[2])
     except IndexError:
         display.updateLabelText(label_3, "")
+
+    last_visible_highlights = to_display
 
 
 async def main():

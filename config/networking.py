@@ -22,7 +22,7 @@ def list_feeds(mqtt_l):
 
 def publ_initial_config():
     for key in master.config_dict:
-        publ_data(mqtt_link, key, master.bool_to_str[master.config_dict[key]], True)
+        publ_data(mqtt_link, key, master.adafruit_conversion_dict[master.config_dict[key]], True)
 
 
 def connect_adafruit(wifi_links, subscription_list):
