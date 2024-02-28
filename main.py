@@ -6,7 +6,6 @@ from pico_security_hub.controllers import control_buzzer, control_buttons, contr
 from pico_security_hub.sensors import hardware_temp, local_temp, motion_detection, uptime
 
 
-
 async def start_offline():
     """Start the system in offline mode, only initialising the display, buttons, and LED."""
     master.NETWORKING_ENABLED = False
