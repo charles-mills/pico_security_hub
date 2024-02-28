@@ -15,30 +15,48 @@ def make_pin_reader(pin):
     return lambda: io.value
 
 
+async def process_cycle_button(cycle):
+    cycle.update()
+    if display.info["in_options"] and cycle.fell:
+        display.info["cycle_highlighted"] = True
+
+
+async def process_select_button(select):
+    select.update()
+    if display.info["in_options"] and select.fell:
+        display.info["selection_changed"] = True
+
+
+async def process_cycle_menu_button(cycle_menu):
+    cycle_menu.update()
+    if cycle_menu.fell:
+        if display.info["display_selector_option"] >= display.info["max_index_options"]:
+            display.info["display_selector_option"] = 0
+        else:
+            display.info["display_selector_option"] += 1
+
+
+async def process_forfeit_button(forfeit):
+    forfeit.update()
+    if forfeit.fell:
+        display.info["exit_program"] = True
+        control_led.disable()
+        print("Program is ending in 1 second...")
+        await asyncio.sleep(1)
+        sys.exit()
+
+
 async def process_buttons(cycle, select, cycle_menu, forfeit):
+    button_functions = {
+        cycle: process_cycle_button,
+        select: process_select_button,
+        cycle_menu: process_cycle_menu_button,
+        forfeit: process_forfeit_button
+    }
+
     while True:
-        cycle.update()
-        select.update()
-        cycle_menu.update()
-        forfeit.update()
-
-        if display.in_options:
-            if cycle.fell:
-                display.cycle_highlighted = True
-            elif select.fell:
-                display.selection_changed = True
-
-        if cycle_menu.fell:
-            if display.display_selector_option >= display.max_index_options:
-                display.display_selector_option = 0
-            else:
-                display.display_selector_option += 1
-        elif forfeit.fell:
-            display.exit_program = True
-            control_led.disable()
-            print("Program is ending in 1 second...")
-            await asyncio.sleep(1)
-            sys.exit()
+        for button, function in button_functions.items():
+            await function(button)
         await asyncio.sleep(0.05)
 
 

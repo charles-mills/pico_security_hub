@@ -33,11 +33,14 @@ async def get_baseline(loops):
         await asyncio.sleep(0.1)
         sonic_ranger.pause()
 
-        results.append(sonic_ranger[0] * 0.017)
+        try:
+            results.append(sonic_ranger[0] * 0.017)
+        except IndexError:
+            pass
 
     centre_result = results[int(loops / 2)]
     print(f"Motion Detection: Baseline Test Completed - {centre_result}cm")
-    master.motion_enabled = True
+    master.config_dict["motion_enabled"] = True
     return centre_result
 
 

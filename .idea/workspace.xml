@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="Add additional doc strings and error handling">
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/pico_security_hub.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pico_security_hub.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.deepsource.toml" beforeDir="false" afterPath="$PROJECT_DIR$/.deepsource.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/boot.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/boot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/config_vars.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_vars.py" afterDir="false" />
@@ -144,6 +142,8 @@
       <workItem from="1709080661463" duration="29000" />
       <workItem from="1709138915474" duration="289000" />
       <workItem from="1709139216648" duration="2848000" />
+      <workItem from="1709151763654" duration="84000" />
+      <workItem from="1709151861127" duration="3211000" />
     </task>
     <task id="LOCAL-00001" summary="Make options menu selection dynamic">
       <option name="closed" value="true" />
