@@ -48,7 +48,8 @@ async def main():
     cycle_menu_btn = Debouncer(make_pin_reader(board.GP22))
     forfeit_btn = Debouncer(make_pin_reader(board.GP5))
 
-    buttons_task = asyncio.create_task(process_buttons(cycle_btn, select_btn, cycle_menu_btn, forfeit_btn))
+    buttons_task = asyncio.create_task(process_buttons(
+        cycle_btn, select_btn, cycle_menu_btn, forfeit_btn))
 
     await asyncio.gather(buttons_task)
 

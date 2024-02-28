@@ -2,7 +2,8 @@ import json
 
 MASTER_LOOP = True
 NETWORKING_ENABLED = True
-DEBUG_MODE = False  # Set to True to disable networking and file I/O, and to enable debug messages.
+# Set to True to disable networking and file I/O, and to enable debug messages.
+DEBUG_MODE = False
 
 # Below dict converts the values of the Adafruit IO feed to a boolean value, or vice-versa.
 adafruit_conversion_dict = {"ON": True, True: "ON", "OFF": False, False: "OFF"}
@@ -58,5 +59,3 @@ def write_config():
                 json.dump(config_dict, f)
     except Exception as e:
         print(f"An error occurred while writing the configuration file: {e}")
-
-

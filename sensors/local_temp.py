@@ -39,10 +39,13 @@ async def publ_local_data(dht11):
             try:
                 local_humidity = dht11.getHumidity()
                 local_temp = dht11.getTemperature()
-                networking.publ_data(networking.mqtt_link, "local_humidity", local_temp, mute=True)
-                networking.publ_data(networking.mqtt_link, "local_temperature", local_temp, mute=True)
+                networking.publ_data(networking.mqtt_link,
+                                     "local_humidity", local_temp, mute=True)
+                networking.publ_data(networking.mqtt_link,
+                                     "local_temperature", local_temp, mute=True)
                 await control_led.send_colour()
-            except:  # Broad exception clause as the expected error ("MQTT") does not support targeted exception
+            # Broad exception clause as the expected error ("MQTT") does not support targeted exception
+            except:
                 pass
         await asyncio.sleep(5)
 

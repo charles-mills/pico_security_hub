@@ -11,7 +11,8 @@ async def parse_updates():
 
     while update:
         config_var = update[0].split("crjm/feeds/", 1)[1]
-        updates.append((config_var, master.adafruit_conversion_dict[update[1]]))
+        updates.append(
+            (config_var, master.adafruit_conversion_dict[update[1]]))
         update = networking.mqtt_link.checkForUpdates()
 
     return updates

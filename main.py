@@ -21,9 +21,12 @@ async def start_offline():
 async def start_online():
     """Start the system in online mode, initialising all components."""
     boot.main()  # Run the boot sequence, configuring networking in the process.
-    master.get_vars()  # Fetch configuration variables from the local JSON file.
-    networking.publ_initial_config()  # Publish the initial configuration to the MQTT broker.
-    control_buzzer.queue.append("start")   # Queue the start-up tune if the buzzer is enabled.
+    # Fetch configuration variables from the local JSON file.
+    master.get_vars()
+    # Publish the initial configuration to the MQTT broker.
+    networking.publ_initial_config()
+    # Queue the start-up tune if the buzzer is enabled.
+    control_buzzer.queue.append("start")
 
     await asyncio.gather(subscriptions.main(), motion_detection.main(), hardware_temp.main(),
                          local_temp.main(), control_buttons.main(), control_display.main(),
@@ -45,7 +48,8 @@ async def main():
     except RuntimeError:  # Occurs when the system is unable to connect to the MQTT broker.
         print("RuntimeError occurred, falling back to offline mode.")
         await start_offline()
-    except Exception as e:  # Catch-all exception to prevent the system from crashing.
+    # Catch-all exception to prevent the system from crashing.
+    except Exception as e:
         print(f"Unexpected error occurred: {e}, falling back to offline mode.")
         await start_offline()
     else:
@@ -54,4 +58,3 @@ async def main():
 
 if __name__ == "__main__":
     sys.exit(asyncio.run(main()))
-
