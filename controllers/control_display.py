@@ -173,7 +173,8 @@ async def display_menus(display, menu, title, label_1, label_2, label_3):
                     display_visible_highlights(
                         display, menu, title, label_1, label_2, label_3)
             else:
-                menus[info["display_selector_option"]](display, title, label_1, label_2, label_3)
+                menus[info["display_selector_option"]](
+                    display, title, label_1, label_2, label_3)
             info["last_selection_option"] = info["display_selector_option"]
         await asyncio.sleep(SLEEP_TIME)
 
