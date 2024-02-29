@@ -1,6 +1,5 @@
-from Unit19Modules.monochromeDisplay import grove_display
-
 import asyncio
+from Unit19Modules.monochromeDisplay import grove_display
 
 from pico_security_hub.controllers import display_class
 from pico_security_hub.sensors import motion_detection
@@ -31,7 +30,7 @@ info = {
 }
 
 
-def has_data_changed(new_data):
+def has_display_data_changed(new_data):
     """
     Checks if the new data is different from the previously stored data.
 
@@ -45,33 +44,28 @@ def has_data_changed(new_data):
     return False
 
 
-def push_changed_data(display, title, label_1, label_2, label_3, new_data):
+def push_display_data_changed(display, labels, new_data):
     """
     Updates the display labels if the new data is different from the previously stored data.
 
     :param display: The display object.
-    :param title: The title label.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     :param new_data: The new data to be displayed.
     """
-    if has_data_changed(new_data):
-        display.updateLabelText(title, new_data[0])
-        display.updateLabelText(label_1, new_data[1])
-        display.updateLabelText(label_2, new_data[2])
-        display.updateLabelText(label_3, new_data[3])
+    if has_display_data_changed(new_data):
+        for i, label in enumerate(labels):
+            try:
+                display.updateLabelText(label, new_data[i])
+            except IndexError:
+                display.updateLabelText(label, "")
 
 
-def flood_detection_menu(display, title, label_1, label_2, label_3):
+def flood_detection_menu(display, labels):
     """
     Displays the flood detection menu.
 
     :param display: The display object.
-    :param title: The title label.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     """
     global info
 
@@ -81,18 +75,15 @@ def flood_detection_menu(display, title, label_1, label_2, label_3):
     # Flood risk APIs are not usable due to cost
 
     new_data = ["Flood Detection", "Overall Risk: Low", "Water Levels: 0%", ""]
-    push_changed_data(display, title, label_1, label_2, label_3, new_data)
+    push_display_data_changed(display, labels, new_data)
 
 
-def fire_detection_menu(display, title, label_1, label_2, label_3):
+def fire_detection_menu(display, labels):
     """
     Displays the fire detection menu.
 
     :param display: The display object.
-    :param title: The title label.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     """
     global info
 
@@ -100,43 +91,37 @@ def fire_detection_menu(display, title, label_1, label_2, label_3):
 
     new_data = ["Fire Detection", f"Overall Risk: {local_temp.fire_risk()}", f"Temperature: {local_temp.local_temp}°C",
                 f"Humidity: {local_temp.local_humidity}%"]
-    push_changed_data(display, title, label_1, label_2, label_3, new_data)
+    push_display_data_changed(display, labels, new_data)
 
 
-def warnings_menu(display, title, label_1, label_2, label_3):
+def warnings_menu(display, labels):
     """
     Displays the warnings menu.
 
     :param display: The display object.
-    :param title: The title label.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     """
     global info
 
     info["in_options"] = False
 
     new_data = ["Warnings", "No Warnings", "", ""]
-    push_changed_data(display, title, label_1, label_2, label_3, new_data)
+    push_display_data_changed(display, labels, new_data)
 
 
-def motion_detection_menu(display, title, label_1, label_2, label_3):
+def motion_detection_menu(display, labels):
     """
     Displays the motion detection menu.
 
     :param display: The display object.
-    :param title: The title label.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     """
     global info
 
     info["in_options"] = False
     new_data = None
 
-    display.updateLabelText(title, "Motion Detection")
+    display.updateLabelText(labels[0], "Motion Detection")
     if master.config_dict["motion_enabled"]:
         if motion_detection.motion_detected:
             new_data = ["Motion Detection", "Motion Detected!", "", ""]
@@ -145,10 +130,10 @@ def motion_detection_menu(display, title, label_1, label_2, label_3):
     else:
         new_data = ["Motion Detection", "Option Disabled.", "", ""]
 
-    push_changed_data(display, title, label_1, label_2, label_3, new_data)
+    push_display_data_changed(display, labels, new_data)
 
 
-def select_menu(display, title, label_1, label_2, label_3, menu, menus):
+def select_menu(display, labels, menu, menus):
     highlights_index = menus.index(display_visible_highlights)
 
     if settings["loop"]:
@@ -156,22 +141,19 @@ def select_menu(display, title, label_1, label_2, label_3, menu, menus):
             if (info["last_visible_highlights"] != menu.get_current_list or
                     info["last_selection_option"] != info["display_selector_option"]):
                 display_visible_highlights(
-                    display, menu, title, label_1, label_2, label_3)
+                    display, menu, labels)
         else:
-            menus[info["display_selector_option"]](display, title, label_1, label_2, label_3)
+            menus[info["display_selector_option"]](display, labels)
         info["last_selection_option"] = info["display_selector_option"]
 
 
-async def display_menus(display, menu, title, label_1, label_2, label_3):
+async def display_menus(display, menu, labels):
     """
     Continuously displays the selected menu.
 
     :param display: The display object.
     :param menu: The menu object.
-    :param title: The title label.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     """
     global info
 
@@ -179,11 +161,11 @@ async def display_menus(display, menu, title, label_1, label_2, label_3):
              flood_detection_menu, fire_detection_menu, display_visible_highlights]
 
     while True:
-        select_menu(display, title, label_1, label_2, label_3, menu, menus)
+        select_menu(display, labels, menu, menus)
         await asyncio.sleep(SLEEP_TIME)
 
 
-def get_confirm_change_text(var):
+def get_selection_confirm_text(var):
     """
     Gets the confirmation message for a variable change.
 
@@ -195,104 +177,88 @@ def get_confirm_change_text(var):
     return "Option is now False"
 
 
-def update_confirm_change(menu, text, display, label_1, label_2, label_3):
+def update_selection_confirm_change(menu, text, display, labels):
     """
     Updates the display with the confirmation message.
 
     :param menu: The menu object.
     :param text: The confirmation message.
     :param display: The display object.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     """
     selection_index = menu.get_visible_options().index(menu.current_highlighted)
 
-    if selection_index == 0:
-        display.updateLabelText(label_1, text)
-    elif selection_index == 1:
-        display.updateLabelText(label_2, text)
-    elif selection_index == 2:
-        display.updateLabelText(label_3, text)
+    for i, label in enumerate(labels[1:]):  # Skip the title label
+        if i == selection_index:
+            display.updateLabelText(label, text)
 
 
-async def confirm_change(var, menu, display, label_1, label_2, label_3):
+async def selection_confirm_change(var, menu, display, labels):
     """
     Confirms the change of a variable and updates the display.
 
     :param var: The variable that has been changed.
     :param menu: The menu object.
     :param display: The display object.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     """
     global settings
 
     settings["loop"] = False
 
-    text = get_confirm_change_text(var)
-    update_confirm_change(menu, text, display, label_1, label_2, label_3)
+    text = get_selection_confirm_text(var)
+    update_selection_confirm_change(menu, text, display, labels)
 
     await asyncio.sleep(0.5)
     settings["loop"] = True
 
 
-def pause_display(display, title, label_1, label_2, label_3, text="Paused"):
+def pause_display(display, labels, text="Paused"):
     """
     Pauses the display with a specified message.
     Used when timed functions are outgoing, such as motion detection re-initialisation.
 
     :param display: The display object.
-    :param title: The title label.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     :param text: The text to be displayed when the display is paused.
     """
     global settings
 
     settings["loop"] = False
-    display.updateLabelText(title, "")
-    display.updateLabelText(label_1, "Display Paused")
-    display.updateLabelText(label_2, text)
-    display.updateLabelText(label_3, "")
+    display.updateLabelText(labels[0], "")
+    display.updateLabelText(labels[1], "Display Paused")
+    display.updateLabelText(labels[2], text)
+    display.updateLabelText(labels[3], "")
 
 
-async def toggle_var_and_confirm(var, menu, display, label_1, label_2, label_3):
+async def toggle_var_and_confirm(var, menu, display, labels):
     """
     Toggles a variable, confirms the change (incl. publishing to Adafruit), and updates the display.
 
     :param var: The variable to be toggled.
     :param menu: The menu object.
     :param display: The display object.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     """
     master.toggle_var(var)
     networking.publ_data(networking.mqtt_link, var,
                          master.adafruit_conversion_dict[master.config_dict[var]], True)
-    await confirm_change(master.config_dict[var], menu,
-                         display, label_1, label_2, label_3)
+    await selection_confirm_change(master.config_dict[var], menu,
+                                   display, labels)
     master.write_config()
     await asyncio.sleep(SLEEP_TIME)
 
 
-async def motion_reinitialise(display, title, label_1, label_2, label_3):
+async def motion_reinitialise(display, labels):
     """
     Re-initialises the motion detection and updates the display.
 
     :param display: The display object.
-    :param title: The title label.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     """
     global settings
 
-    pause_display(display, title, label_1, label_2,
-                  label_3, "Re-initialising...")
+    pause_display(display, labels, "Re-initialising...")
     master.config_dict["motion_enabled"] = False
     baseline = await asyncio.create_task(motion_detection.get_baseline(5))
     motion_detection.expected_range_cm = (baseline - baseline / 10)
@@ -300,7 +266,7 @@ async def motion_reinitialise(display, title, label_1, label_2, label_3):
     settings["loop"] = True
 
 
-async def process_selection(display, menu, title, label_1, label_2, label_3):
+async def process_selection(display, menu, labels):
     global info, settings
 
     highlight_id_to_function = {
@@ -323,12 +289,12 @@ async def process_selection(display, menu, title, label_1, label_2, label_3):
 
         elif highlight_id in highlight_id_to_function:
             # If the current highlight is a function, call it
-            await highlight_id_to_function[highlight_id](display, title, label_1, label_2, label_3)
+            await highlight_id_to_function[highlight_id](display, labels)
 
         elif highlight_id in master.config_dict:
             # If the current highlight is a toggleable option, toggle it
             await toggle_var_and_confirm(highlight_id,
-                                         menu, display, label_1, label_2, label_3)
+                                         menu, display, labels)
 
         elif menu.current_highlighted in menu.option_to_defaults["main"]:
             # If in main menu, select the option currently highlighted
@@ -345,12 +311,12 @@ async def process_selection(display, menu, title, label_1, label_2, label_3):
         await asyncio.sleep(0.5)  # Wait for the display to close
 
 
-async def respond_to_buttons(display, menu, title, label_1, label_2, label_3):
+async def respond_to_buttons(display, menu, labels):
     global settings
 
     while True:
         if settings["loop"]:
-            await process_selection(display, menu, title, label_1, label_2, label_3)
+            await process_selection(display, menu, labels)
         await asyncio.sleep(SLEEP_TIME)
 
 
@@ -376,32 +342,27 @@ def update_display_labels(display, labels, to_display):
     :param labels: The labels to be updated.
     :param to_display: The text to be displayed.
     """
-    for i, label in enumerate(labels):
+    for i, label in enumerate(labels[1:]):  # Skip the title label
         try:
             display.updateLabelText(label, to_display[i])
         except IndexError:
             display.updateLabelText(label, "")
 
 
-def display_visible_highlights(display, menu, title, label_1, label_2, label_3):
+def display_visible_highlights(display, menu, labels):
     """
     Displays the currently visible options ("highlights") on the display.
 
     :param display: The display object.
     :param menu: The menu object.
-    :param title: The title label.
-    :param label_1: The first label.
-    :param label_2: The second label.
-    :param label_3: The third label.
+    :param labels: The labels to be updated.
     """
     global info
 
     info["in_options"] = True
 
     to_display = menu.get_current_list()
-    set_title_text(display, title, menu)
-
-    labels = [label_1, label_2, label_3]
+    set_title_text(display, labels[0], menu)
     update_display_labels(display, labels, to_display)
 
     info["last_visible_highlights"] = to_display
@@ -430,8 +391,9 @@ async def main():
     menu = display_class.VisibleMenu()
 
     display, title, label_1, label_2, label_3 = configure_display()
-    tasks = [display_menus(display, menu, title, label_1, label_2, label_3),
-             respond_to_buttons(display, menu, title, label_1, label_2, label_3)]
+    labels = [title, label_1, label_2, label_3]
+    tasks = [display_menus(display, menu, labels),
+             respond_to_buttons(display, menu, labels)]
 
     await asyncio.gather(*tasks)
 

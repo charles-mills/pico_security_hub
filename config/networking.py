@@ -1,5 +1,3 @@
-import re
-
 from Unit19Modules.mqtt import mqtt
 from Unit19Modules.wifi import wifiConnectClass
 from pico_security_hub.config import config_vars as master
@@ -37,6 +35,7 @@ def connect_adafruit(wifi_links, subscription_list):
         return mqtt_obj
     except Exception as e:
         print(f"An error occurred while connecting to Adafruit: {e}")
+        return None
 
 
 def publ_data(mqtt_l, publication, value, mute=False):
@@ -58,6 +57,8 @@ def main():
     wifi_links = wifi_obj.connectToWiFi()
 
     mqtt_link = connect_adafruit(wifi_links, subscription_list)
+    if not mqtt_link:
+        master.config_dict["networking_enabled"] = False
 
 
 if __name__ == "__main__":
