@@ -1,6 +1,6 @@
 import asyncio
 from Unit19Modules.piBuzzer import buzzerOut
-from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import configuration
 
 buzzer = buzzerOut.Buzzer()
 queue = []
@@ -15,7 +15,7 @@ tunes = {
 
 
 async def play_tune(tune):
-    if master.config_dict["audio_low"]:
+    if configuration.config_manager.config_dict["audio_low"]:
         tunes[tune]["volume"] = 2
 
     buzzer.play_tune(tunes[tune]["notes"], 3, tunes[tune]
@@ -24,7 +24,7 @@ async def play_tune(tune):
 
 async def main():
     while True:
-        if queue and not master.config_dict["audio_mute"]:
+        if queue and not configuration.config_manager.config_dict["audio_mute"]:
             await play_tune(queue.pop(0))
         elif queue:
             queue.pop(0)

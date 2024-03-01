@@ -4,7 +4,7 @@ import board
 import pulseio
 
 from pico_security_hub.config import networking
-from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import configuration
 from pico_security_hub.config import publishing
 from pico_security_hub.controllers import control_led
 from pico_security_hub.controllers import control_buzzer
@@ -21,7 +21,7 @@ def check_motion_sensitive():
     """
     This function checks if the motion detection is set to be sensitive or not.
     """
-    if master.config_dict["motion_sensitive"]:
+    if configuration.config_manager.config_dict["motion_sensitive"]:
         return HIGH_SENSITIVE_FLAGS
     return LOW_SENSITIVE_FLAGS
 
@@ -29,7 +29,7 @@ def check_motion_sensitive():
 async def handle_motion_publishing(motion_detection_flags, allowed_flags):
     if motion_detection_flags >= allowed_flags:
         motion_detection_flags = 0
-        if master.config_dict["motion_publish"]:
+        if configuration.config_manager.config_dict["motion_publish"]:
             networking.publ_data(
                 networking.mqtt_link, "motion_detected", "Motion Detected!", mute=True)
             await publishing.trigger("Motion Detection", "Motion Detected")
@@ -86,7 +86,7 @@ async def check_motion():
     expected_range_cm -= expected_range_cm / 10
 
     while True:
-        if master.MASTER_LOOP and master.config_dict["motion_enabled"]:
+        if configuration.config_manager.MASTER_LOOP and configuration.config_manager.config_dict["motion_enabled"]:
             allowed_flags = check_motion_sensitive()
             actual_dist_cm = await measure_distance()
             motion_detection_flags = handle_motion_detection(actual_dist_cm, motion_detection_flags)
@@ -104,7 +104,7 @@ async def get_baseline(loops):
     """
     global motion_detected
 
-    master.config_dict["motion_enabled"] = False
+    configuration.config_manager.config_dict["motion_enabled"] = False
     results = []
 
     for _ in range(loops):
@@ -115,7 +115,7 @@ async def get_baseline(loops):
 
     centre_result = results[int(loops / 2)]  # This calculation should be improved by calculating median
     print(f"Motion Detection: Baseline Test Completed - {centre_result}cm")
-    master.config_dict["motion_enabled"] = True
+    configuration.config_manager.config_dict["motion_enabled"] = True
     return centre_result
 
 

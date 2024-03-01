@@ -1,6 +1,6 @@
 import asyncio
 
-from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import configuration
 from Unit19Modules.neopixel import board_neoPixel
 
 neo = board_neoPixel.neoPixel()
@@ -18,12 +18,12 @@ colour_to_func = {
 
 
 def disable():
-    master.config_dict["LED_enabled"] = False
+    configuration.config_manager.config_dict["LED_enabled"] = False
     neo.off()
 
 
 def led_active():
-    if not master.config_dict["LED_enabled"]:
+    if not configuration.config_manager.config_dict["LED_enabled"]:
         neo.off()
         return False
     return True

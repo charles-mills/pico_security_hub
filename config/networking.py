@@ -1,6 +1,6 @@
 from Unit19Modules.mqtt import mqtt
 from Unit19Modules.wifi import wifiConnectClass
-from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import configuration
 
 mqtt_link = None
 
@@ -19,9 +19,10 @@ def list_feeds(mqtt_l):
 
 
 def publ_initial_config():
-    for key in master.config_dict:
+    for key in configuration.config_manager.config_dict:
         publ_data(
-            mqtt_link, key, master.adafruit_conversion_dict[master.config_dict[key]], True)
+            mqtt_link, key, configuration.config_manager.ADAFRUIT_CONVERSION_DICT
+            [configuration.config_manager.config_dict[key]], True)
 
 
 def connect_adafruit(wifi_links, subscription_list):
@@ -50,7 +51,7 @@ def main():
 
     subscription_list = []
 
-    for key in master.config_dict:
+    for key in configuration.config_manager.config_dict:
         subscription_list.append("/feeds/" + key)
 
     wifi_obj = wifiConnectClass.WiFi()
@@ -58,7 +59,7 @@ def main():
 
     mqtt_link = connect_adafruit(wifi_links, subscription_list)
     if not mqtt_link:
-        master.config_dict["networking_enabled"] = False
+        configuration.config_manager.config_dict["networking_enabled"] = False
 
 
 if __name__ == "__main__":

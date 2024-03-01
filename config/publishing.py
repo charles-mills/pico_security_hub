@@ -1,7 +1,7 @@
 import asyncio
 
 from pico_security_hub.controllers import control_led
-from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import configuration
 
 
 async def trigger(sensor, message, published=True):
@@ -13,4 +13,4 @@ async def trigger(sensor, message, published=True):
     else:
         output += "Publishing is Disabled."
 
-    master.log(output)
+    configuration.config_manager.log(output)

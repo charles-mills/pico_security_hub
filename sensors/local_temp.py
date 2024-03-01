@@ -1,7 +1,7 @@
 import asyncio
 
 from pico_security_hub.config import networking
-from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import configuration
 from Unit19Modules.DHT_Module import DHT11_Module
 from pico_security_hub.controllers import control_led
 
@@ -35,7 +35,8 @@ async def publ_local_data(dht11):
     global local_humidity
 
     while True:
-        if master.MASTER_LOOP and master.config_dict["temperature_publish"]:
+        if (configuration.config_manager.MASTER_LOOP and
+                configuration.config_manager.config_dict["temperature_publish"]):
             try:
                 local_humidity = dht11.getHumidity()
                 local_temp = dht11.getTemperature()

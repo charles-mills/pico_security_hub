@@ -2,13 +2,13 @@ import asyncio
 import microcontroller
 
 from pico_security_hub.config import networking
-from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import configuration
 from pico_security_hub.controllers import control_led
 
 
 async def publ_cpu_temp():
     while True:
-        if master.MASTER_LOOP and master.config_dict["temperature_publish"]:
+        if configuration.config_manager.MASTER_LOOP and configuration.config_manager.config_dict["temperature_publish"]:
             cpu_temp = microcontroller.cpu.temperature
             networking.publ_data(networking.mqtt_link,
                                  "core_temperature", cpu_temp, mute=True)

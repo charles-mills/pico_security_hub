@@ -5,7 +5,7 @@ from pico_security_hub.controllers import display_class
 from pico_security_hub.sensors import motion_detection
 from pico_security_hub.sensors import local_temp
 from pico_security_hub.config import networking
-from pico_security_hub.config import config_vars as master
+from pico_security_hub.config import configuration
 
 # Constants
 
@@ -122,7 +122,7 @@ def motion_detection_menu(display, labels):
     new_data = None
 
     display.updateLabelText(labels[0], "Motion Detection")
-    if master.config_dict["motion_enabled"]:
+    if configuration.config_manager.config_dict["motion_enabled"]:
         if motion_detection.motion_detected:
             new_data = ["Motion Detection", "Motion Detected!", "", ""]
         else:
@@ -240,12 +240,12 @@ async def toggle_var_and_confirm(var, menu, display, labels):
     :param display: The display object.
     :param labels: The labels to be updated.
     """
-    master.toggle_var(var)
+    configuration.config_manager.toggle_var(var)
     networking.publ_data(networking.mqtt_link, var,
-                         master.adafruit_conversion_dict[master.config_dict[var]], True)
-    await selection_confirm_change(master.config_dict[var], menu,
+                         configuration.config_manager.ADAFRUIT_CONVERSION_DICT[configuration.config_manager.config_dict[var]], True)
+    await selection_confirm_change(configuration.config_manager.config_dict[var], menu,
                                    display, labels)
-    master.write_config()
+    configuration.config_manager.write_config()
     await asyncio.sleep(SLEEP_TIME)
 
 
@@ -259,10 +259,10 @@ async def motion_reinitialise(display, labels):
     global settings
 
     pause_display(display, labels, "Re-initialising...")
-    master.config_dict["motion_enabled"] = False
+    configuration.config_manager.config_dict["motion_enabled"] = False
     baseline = await asyncio.create_task(motion_detection.get_baseline(5))
     motion_detection.expected_range_cm = (baseline - baseline / 10)
-    master.config_dict["motion_enabled"] = True
+    configuration.config_manager.config_dict["motion_enabled"] = True
     settings["loop"] = True
 
 
@@ -291,7 +291,7 @@ async def process_selection(display, menu, labels):
             # If the current highlight is a function, call it
             await highlight_id_to_function[highlight_id](display, labels)
 
-        elif highlight_id in master.config_dict:
+        elif highlight_id in configuration.config_manager.config_dict:
             # If the current highlight is a toggleable option, toggle it
             await toggle_var_and_confirm(highlight_id,
                                          menu, display, labels)
