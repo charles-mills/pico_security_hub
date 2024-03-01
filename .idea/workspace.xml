@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="Add additional doc strings and error handling">
+    <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="Refactor display control funcs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/boot.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/boot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/subscriptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/subscriptions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/control_display.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_display.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/control_led.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_led.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +130,9 @@
       <workItem from="1709138915474" duration="289000" />
       <workItem from="1709139216648" duration="2848000" />
       <workItem from="1709151763654" duration="84000" />
-      <workItem from="1709151861127" duration="7570000" />
+      <workItem from="1709151861127" duration="8602000" />
+      <workItem from="1709160791904" duration="677000" />
+      <workItem from="1709218413886" duration="4621000" />
     </task>
     <task id="LOCAL-00001" summary="Make options menu selection dynamic">
       <option name="closed" value="true" />
@@ -147,7 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709065737246</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Refactor display control funcs">
+      <option name="closed" value="true" />
+      <created>1709220367949</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1709220367949</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,6 +179,7 @@
     <MESSAGE value="Make options menu selection dynamic" />
     <MESSAGE value="Add display func" />
     <MESSAGE value="Add additional doc strings and error handling" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add additional doc strings and error handling" />
+    <MESSAGE value="Refactor display control funcs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor display control funcs" />
   </component>
 </project>

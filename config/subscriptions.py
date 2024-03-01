@@ -2,7 +2,6 @@ import asyncio
 
 from pico_security_hub.config import networking
 from pico_security_hub.config import config_vars as master
-from pico_security_hub.controllers import control_display
 
 
 async def parse_updates():

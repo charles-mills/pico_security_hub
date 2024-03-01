@@ -277,8 +277,8 @@ async def process_selection(display, menu, labels):
     if info["cycle_highlighted"]:
         info["cycle_highlighted"] = False
         menu.cycle_highlighted()
-
-    if info["selection_changed"]:
+        display_visible_highlights(display, menu, labels)
+    elif info["selection_changed"]:
         info["selection_changed"] = False
 
         highlight_id = menu.current_option + "_" + menu.current_highlighted
