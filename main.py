@@ -45,7 +45,8 @@ async def main():
     except RuntimeError:  # Occurs when the system is unable to connect to the MQTT broker.
         print("RuntimeError occurred, falling back to offline mode.")
         await start_system_offline()
-    except Exception as e:  # Catch-all exception to prevent the system from crashing.
+    # Catch-all exception to prevent the system from crashing.
+    except Exception as e:
         print(f"Unexpected error occurred: {e}, falling back to offline mode.")
         await start_system_offline()
     else:
