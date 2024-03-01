@@ -33,8 +33,10 @@ def get_skull_image_lines():
 class BootSystem:
     def __init__(self):
         self.display = grove_display.BitmapDisplay(DISPLAY_ADDRESS)
-        self.title = self.display.addLabel(TITLE_LABEL_X, TITLE_LABEL_Y, TITLE_LABEL_SIZE, "")
-        self.label_1 = self.display.addLabel(SUB_LABEL_X, SUB_LABEL_Y, SUB_LABEL_SIZE, "")
+        self.title = self.display.addLabel(
+            TITLE_LABEL_X, TITLE_LABEL_Y, TITLE_LABEL_SIZE, "")
+        self.label_1 = self.display.addLabel(
+            SUB_LABEL_X, SUB_LABEL_Y, SUB_LABEL_SIZE, "")
         control_led.neo.setBlue(LED_INTENSITY)
 
     def update_display_text(self, label, text, pause=SLEEP_TIME):
@@ -90,4 +92,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
