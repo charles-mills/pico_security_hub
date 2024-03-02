@@ -8,11 +8,12 @@ class VisibleMenu:
         self.highlighted_index = 0
 
         self.option_to_defaults = {
-            "main": ["audio", "motion", "LED", "temperature"],
+            "main": ["audio", "motion", "LED", "adafruit", "quit"],
             "audio": ["mute", "low", "back"],
             "motion": ["enabled", "publish", "re-initialise", "sensitive", "back"],
             "LED": ["enabled", "back"],
             "temperature": ["publish", "back"],
+            "adafruit": ["enabled", "back"],
         }
 
     def add_arrow_to_highlight(self):
