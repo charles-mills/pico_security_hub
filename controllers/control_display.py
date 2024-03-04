@@ -184,33 +184,47 @@ async def check_for_exit_program(display) -> None:
         await asyncio.sleep(0.5)  # Wait for the display to close
 
 
+async def check_for_highlight_func(display, labels, highlight_id_to_func: dict, highlight_id: str) -> bool:
+    if highlight_id in highlight_id_to_func:
+        await highlight_id_to_func[highlight_id](display, labels)
+        return True
+    return False
+
+
+def check_for_back(menu: display_class.VisibleMenu) -> bool:
+    if menu.current_highlighted == "back":
+        menu.set_current_option("main")
+        return True
+    return False
+
+
 async def check_for_selection_changed(display, labels, menu, highlight_id_to_func: dict) -> None:
     global info
 
-    if info["selection_changed"]:
-        info["selection_changed"] = False
+    if not info["selection_changed"]:
+        return
 
-        highlight_id = menu.current_option + "_" + menu.current_highlighted
+    info["selection_changed"] = False
 
-        if menu.current_highlighted == "back":
-            # Go back to main menu
-            menu.set_current_option("main")
+    highlight_id = menu.current_option + "_" + menu.current_highlighted
+    if check_for_back(menu):
+        return
 
-        elif highlight_id in highlight_id_to_func:
-            # If the current highlight is a function, call it
-            await highlight_id_to_func[highlight_id](display, labels)
+    if await check_for_highlight_func(display, labels, highlight_id_to_func, highlight_id):
+        return
 
-        elif highlight_id in configuration.config_manager.config_dict:
-            # If the current highlight is a toggleable option, toggle it
-            await toggle_var_and_confirm(highlight_id,
-                                         menu, display, labels)
 
-        elif menu.current_highlighted in menu.option_to_defaults["main"]:
-            # If in main menu, select the option currently highlighted
-            menu.select_current_highlighted()
-        else:
-            # Catch-all to send user back to main menu
-            menu.set_current_option("main")
+    elif highlight_id in configuration.config_manager.config_dict:
+        # If the current highlight is a toggleable option, toggle it
+        await toggle_var_and_confirm(highlight_id,
+                                     menu, display, labels)
+
+    elif menu.current_highlighted in menu.option_to_defaults["main"]:
+        # If in main menu, select the option currently highlighted
+        menu.select_current_highlighted()
+    else:
+        # Catch-all to send user back to main menu
+        menu.set_current_option("main")
 
 
 def get_highlight_to_func() -> dict:
@@ -264,12 +278,12 @@ def update_labels_with_text(display, labels, to_display) -> None:
 
 
 def display_visible_highlights(display, menu, labels) -> None:
-    global info
-
-    info["in_options"] = True
-
     to_display = menu.get_current_list()
     if has_display_data_changed(to_display, "last_visible_highlights"):
+        global info
+
+        info["in_options"] = True
+
         set_title_text(display, labels[0], menu)
         update_labels_with_text(display, labels, to_display)
 
