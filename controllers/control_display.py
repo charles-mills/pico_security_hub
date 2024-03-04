@@ -213,7 +213,6 @@ async def check_for_selection_changed(display, labels, menu, highlight_id_to_fun
     if await check_for_highlight_func(display, labels, highlight_id_to_func, highlight_id):
         return
 
-
     elif highlight_id in configuration.config_manager.config_dict:
         # If the current highlight is a toggleable option, toggle it
         await toggle_var_and_confirm(highlight_id,
