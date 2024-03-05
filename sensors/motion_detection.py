@@ -3,11 +3,9 @@ import asyncio
 import board
 import pulseio
 
-from pico_security_hub.config import networking
+from pico_security_hub.networking import mqtt_handler, publishing
 from pico_security_hub.config import configuration
-from pico_security_hub.config import publishing
-from pico_security_hub.controllers import control_led
-from pico_security_hub.controllers import control_buzzer
+from pico_security_hub.controllers import control_led, control_buzzer
 
 HIGH_SENSITIVE_FLAGS = 2
 LOW_SENSITIVE_FLAGS = 4
@@ -30,8 +28,8 @@ async def handle_motion_publishing(motion_detection_flags, allowed_flags):
     if motion_detection_flags >= allowed_flags:
         motion_detection_flags = 0
         if configuration.config_manager.config_dict["motion_publish"]:
-            networking.publ_data(
-                networking.mqtt_link, "motion_detected", "Motion Detected!", mute=True)
+            mqtt_handler.publ_data(
+                mqtt_handler.mqtt_link, "motion_detected", "Motion Detected!", mute=True)
             await publishing.trigger("Motion Detection", "Motion Detected")
         else:
             await publishing.trigger("Motion Detection", "Motion Detected", False)

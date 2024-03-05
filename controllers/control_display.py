@@ -4,7 +4,7 @@ from Unit19Modules.monochromeDisplay import grove_display
 from pico_security_hub.controllers import display_class
 from pico_security_hub.sensors import motion_detection
 from pico_security_hub.sensors import local_temp
-from pico_security_hub.config import networking
+from pico_security_hub.networking import mqtt_handler
 from pico_security_hub.config import configuration
 
 # Constants
@@ -160,7 +160,7 @@ async def toggle_var_and_confirm(var, menu, display, labels) -> None:
     """
     configuration.config_manager.toggle_var(var)
     if configuration.config_manager.NETWORKING_ENABLED:
-        networking.publ_data(networking.mqtt_link, var,
+        mqtt_handler.publ_data(mqtt_handler.mqtt_link, var,
                              configuration.config_manager.ADAFRUIT_CONVERSION_DICT[
                                  configuration.config_manager.config_dict[var]], True)
     await selection_confirm_change(configuration.config_manager.config_dict[var], menu,

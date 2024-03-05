@@ -1,18 +1,18 @@
 import asyncio
 
-from pico_security_hub.config import networking
+from pico_security_hub.networking import mqtt_handler
 from pico_security_hub.config import configuration
 
 
 async def parse_updates():
     updates = []
-    update = networking.mqtt_link.checkForUpdates()
+    update = mqtt_handler.mqtt_link.checkForUpdates()
 
     while update:
         config_var = update[0].split("crjm/feeds/", 1)[1]
         updates.append(
             (config_var, configuration.config_manager.ADAFRUIT_CONVERSION_DICT[update[1]]))
-        update = networking.mqtt_link.checkForUpdates()
+        update = mqtt_handler.mqtt_link.checkForUpdates()
 
     return updates
 

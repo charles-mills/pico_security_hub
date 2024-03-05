@@ -3,7 +3,8 @@ import time
 import sys
 
 from pico_security_hub.boot import boot_sequence
-from pico_security_hub.config import configuration, networking, subscriptions, bot
+from pico_security_hub.config import configuration, bot
+from pico_security_hub.networking import mqtt_handler, subscriptions
 from pico_security_hub.controllers import control_buzzer, control_buttons, control_display, control_led
 from pico_security_hub.sensors import hardware_temp, local_temp, motion_detection, uptime
 
@@ -30,7 +31,7 @@ async def start_system_online(config_manager=configuration.config_manager):
     # Fetch configuration variables from the local JSON file.
     config_manager.get_vars()
     # Publish the initial configuration to the MQTT broker.
-    networking.publ_initial_config()
+    mqtt_handler.publ_initial_config()
     # Queue the start-up tune if the buzzer is enabled.
     control_buzzer.queue.append("start")
 

@@ -2,7 +2,7 @@ import asyncio
 
 from pico_security_hub.sensors import motion_detection
 from pico_security_hub.sensors import local_temp
-from pico_security_hub.config import networking
+from pico_security_hub.networking import mqtt_handler
 
 NO_RISK_MESSAGE = "Everything is fine. No need to worry."
 POTENTIAL_RISK_MESSAGE = "There is a potential risk. See below for more information."
@@ -74,7 +74,7 @@ def publ_bot_status(chat_bot: ChatBot) -> bool:
     chat_bot.update_message_by_conditions()
 
     if previous_message != chat_bot.message:
-        networking.publ_data(networking.mqtt_link, "bot_status", chat_bot.message, mute=True)
+        mqtt_handler.publ_data(mqtt_handler.mqtt_link, "bot_status", chat_bot.message, mute=True)
         return True
     return False
 

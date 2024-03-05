@@ -1,7 +1,7 @@
 import time
 
 from Unit19Modules.monochromeDisplay import grove_display
-from pico_security_hub.config import networking
+from pico_security_hub.networking import mqtt_handler
 from pico_security_hub.controllers import control_led
 from pico_security_hub.boot.boot_config import (DISPLAY_ADDRESS, VER_LABEL_X_Y_SIZE, TITLE_LABEL_X_Y_SIZE,
                                                 SUB_LABEL_X_Y_SIZE, LED_INTENSITY, SLEEP_TIME, WELCOME_TEXTS, VERSION)
@@ -69,7 +69,7 @@ class BootSystem:
 
         status_message = "Connection Success"
         try:
-            networking.main()
+            mqtt_handler.main()
             control_led.neo.setGreen(LED_INTENSITY)
         except Exception as e:
             status_message = f"Network Connection Failed: {e}"

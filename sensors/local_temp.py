@@ -1,6 +1,6 @@
 import asyncio
 
-from pico_security_hub.config import networking
+from pico_security_hub.networking import mqtt_handler
 from pico_security_hub.config import configuration
 from Unit19Modules.DHT_Module import DHT11_Module
 from pico_security_hub.controllers import control_led
@@ -35,7 +35,7 @@ def handle_humidity(dht11, previous_humidity: float):
 
     # if previous humidity is more than 5% +/- current humidity, publish the new humidity
     if abs(local_humidity - previous_humidity) >= 5:
-        networking.publ_data(networking.mqtt_link, "local_humidity", local_humidity, mute=True)
+        mqtt_handler.publ_data(mqtt_handler.mqtt_link, "local_humidity", local_humidity, mute=True)
 
 
 def handle_local_temp(dht11, previous_temp: float):
@@ -45,7 +45,7 @@ def handle_local_temp(dht11, previous_temp: float):
 
     # if previous temp is more than 1c +/- current temp, publish the new temp
     if abs(local_temp - previous_temp) >= 1:
-        networking.publ_data(networking.mqtt_link, "local_temperature", local_temp, mute=True)
+        mqtt_handler.publ_data(mqtt_handler.mqtt_link, "local_temperature", local_temp, mute=True)
 
 
 async def publ_local_data(dht11: DHT11_Module.TempHumid) -> None:
