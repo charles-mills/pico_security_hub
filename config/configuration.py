@@ -39,7 +39,7 @@ class ConfigManager:
             if not self.DEBUG_MODE:
                 with open("pico_security_hub/data/saved_vars.json", "r", encoding='utf-8') as f:
                     self.config_dict = json.load(f)
-        except (FileNotFoundError, IOError):
+        except FileNotFoundError:
             self.log("Could not read the configuration file.")
 
     def write_config(self):

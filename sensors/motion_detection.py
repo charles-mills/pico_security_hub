@@ -79,7 +79,6 @@ async def check_motion():
     It uses the sonic ranger sensor to measure the distance and compares it with the expected range.
     If the measured distance is less than the expected range, it considers that a motion is detected.
     """
-    global motion_detected
     global expected_range_cm
 
     motion_detection_flags = 0
@@ -102,8 +101,6 @@ async def get_baseline(loops):
     :return centre_result: The median (not yet sorted) distance of the measurements.
 
     """
-    global motion_detected
-
     configuration.config_manager.config_dict["motion_enabled"] = False
     results = []
 

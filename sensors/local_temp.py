@@ -20,7 +20,7 @@ def fire_risk():
     try:
         if local_temp > 30 > local_humidity:
             return "High"
-        elif local_temp > 30 and local_humidity > 30:
+        if local_temp > 30 and local_humidity > 30:
             return "Medium"
         else:
             return "Low"

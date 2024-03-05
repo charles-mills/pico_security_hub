@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="Reduce display update latency">
-      <change afterPath="$PROJECT_DIR$/config/bot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/control_buttons.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_buttons.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/control_display.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_display.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sensors/local_temp.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/local_temp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/configuration.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/configuration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/publishing.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/publishing.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +145,8 @@
       <workItem from="1709398603911" duration="263000" />
       <workItem from="1709398902613" duration="5324000" />
       <workItem from="1709646204640" duration="5016000" />
-      <workItem from="1709652076468" duration="872000" />
+      <workItem from="1709652076468" duration="1714000" />
+      <workItem from="1709654684682" duration="1000" />
     </task>
     <task id="LOCAL-00001" summary="Make options menu selection dynamic">
       <option name="closed" value="true" />
@@ -210,10 +208,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/config/publishing.py</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/controllers/control_buttons.py</url>
           <option name="timeStamp" value="2" />

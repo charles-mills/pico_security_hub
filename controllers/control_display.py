@@ -245,8 +245,6 @@ async def process_selection(display, menu, labels) -> None:
 
 
 async def respond_to_buttons(display, menu, labels) -> None:
-    global settings
-
     while True:
         if settings["loop"]:
             await process_selection(display, menu, labels)

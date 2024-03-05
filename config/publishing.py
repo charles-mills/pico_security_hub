@@ -1,5 +1,3 @@
-import asyncio
-
 from pico_security_hub.controllers import control_led
 from pico_security_hub.config import configuration
 
