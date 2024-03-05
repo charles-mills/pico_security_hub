@@ -25,8 +25,8 @@ info = {
     "display_selector_option": 0,
     "max_index_options": 4,
     "previous_data": None,
-    "last_visible_highlights": None,
-    "last_selection_option": None,
+    "last_visible_highlights": 0,
+    "last_selection_option": 0,
 }
 
 
@@ -39,12 +39,14 @@ def has_display_data_changed(new_data: list[str], previous_data: str) -> bool:
 
 
 def push_display_data_changed(display, labels, new_data) -> None:
-    if has_display_data_changed(new_data, "previous_data"):
-        for i, label in enumerate(labels):
-            try:
-                display.updateLabelText(label, new_data[i])
-            except IndexError:
-                display.updateLabelText(label, "")
+    if not has_display_data_changed(new_data, "previous_data"):
+        return
+
+    for i, label in enumerate(labels):
+        try:
+            display.updateLabelText(label, new_data[i])
+        except IndexError:
+            display.updateLabelText(label, "")
 
 
 def display_non_options_menu(display, labels, to_display: list[str]) -> None:
@@ -85,17 +87,20 @@ def motion_detection_menu(display, labels) -> None:
 
 
 def select_menu(display, labels, menu, menus) -> None:
+    if not settings["loop"]:
+        return
+
     highlights_index = menus.index(display_visible_highlights)
 
-    if settings["loop"]:
-        if info["display_selector_option"] == highlights_index:
-            if (info["last_visible_highlights"] != menu.get_current_list or
-                    info["last_selection_option"] != info["display_selector_option"]):
-                display_visible_highlights(
-                    display, menu, labels)
-        else:
-            menus[info["display_selector_option"]](display, labels)
+    if info["display_selector_option"] != highlights_index:
+        menus[info["display_selector_option"]](display, labels)
+        return
+
+    if (info["last_visible_highlights"] != menu.get_current_list()
+            or info["last_selection_option"] != info["display_selector_option"]):
+        display_visible_highlights(display, menu, labels)
         info["last_selection_option"] = info["display_selector_option"]
+        return
 
 
 async def display_menus(display, menu, labels) -> None:

@@ -4,21 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="Refactor display control funcs">
-      <change afterPath="$PROJECT_DIR$/boot/boot_config.py" afterDir="false" />
+    <list default="true" id="a7de27db-0e81-4eba-b460-9b068f428a04" name="Changes" comment="Reduce display update latency">
+      <change afterPath="$PROJECT_DIR$/config/bot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/boot.py" beforeDir="false" afterPath="$PROJECT_DIR$/boot/boot_sequence.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config_vars.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/configuration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/networking.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/networking.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/publishing.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/publishing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/subscriptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/subscriptions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/control_buzzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_buzzer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/control_buttons.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_buttons.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/control_display.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_display.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/control_led.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/control_led.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sensors/hardware_temp.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/hardware_temp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sensors/local_temp.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/local_temp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sensors/motion_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensors/motion_detection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +54,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Python.chat_bot.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;ToolWindowGit.ShowToolbar&quot;: &quot;false&quot;,
@@ -82,6 +75,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\pico\pico_security_hub\config" />
+      <recent name="E:\pico\pico_security_hub\eval_bot" />
       <recent name="E:\pico\pico_security_hub\boot" />
       <recent name="C:\Users\Charl\OneDrive\Documents\GitHub\pico_security_hub\data" />
     </key>
@@ -149,7 +144,11 @@
       <workItem from="1709218413886" duration="4621000" />
       <workItem from="1709308518134" duration="167000" />
       <workItem from="1709308698724" duration="3353000" />
-      <workItem from="1709312186357" duration="1249000" />
+      <workItem from="1709312186357" duration="4263000" />
+      <workItem from="1709398603911" duration="263000" />
+      <workItem from="1709398902613" duration="5324000" />
+      <workItem from="1709646204640" duration="5016000" />
+      <workItem from="1709652076468" duration="872000" />
     </task>
     <task id="LOCAL-00001" summary="Make options menu selection dynamic">
       <option name="closed" value="true" />
@@ -175,7 +174,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709220367949</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Reduce display update latency">
+      <option name="closed" value="true" />
+      <created>1709402204421</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1709402204421</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,7 +204,8 @@
     <MESSAGE value="Add display func" />
     <MESSAGE value="Add additional doc strings and error handling" />
     <MESSAGE value="Refactor display control funcs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor display control funcs" />
+    <MESSAGE value="Reduce display update latency" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reduce display update latency" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -216,5 +224,8 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/main_py$chat_bot.coverage" NAME="chat_bot Coverage Results" MODIFIED="1709403241944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/config" />
   </component>
 </project>
