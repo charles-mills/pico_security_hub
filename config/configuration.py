@@ -6,7 +6,8 @@ class ConfigManager:
     NETWORKING_ENABLED = True
     DEBUG_MODE = False
 
-    ADAFRUIT_CONVERSION_DICT = {"ON": True, True: "ON", "OFF": False, False: "OFF"}
+    ADAFRUIT_CONVERSION_DICT = {"ON": True,
+                                True: "ON", "OFF": False, False: "OFF"}
 
     def __init__(self):
         self.config_dict = {
@@ -49,7 +50,8 @@ class ConfigManager:
                 with open("pico_security_hub/data/saved_vars.json", "w", encoding='utf-8') as f:
                     json.dump(self.config_dict, f)
         except Exception as e:
-            self.log(f"An error occurred while writing the configuration file: {e}")
+            self.log(
+                f"An error occurred while writing the configuration file: {e}")
 
 
 config_manager = ConfigManager()
