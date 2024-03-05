@@ -11,7 +11,7 @@ async def publ_cpu_temp():
         if configuration.config_manager.MASTER_LOOP and configuration.config_manager.config_dict["temperature_publish"]:
             cpu_temp = microcontroller.cpu.temperature
             mqtt_handler.publ_data(mqtt_handler.mqtt_link,
-                                 "core_temperature", cpu_temp, mute=True)
+                                   "core_temperature", cpu_temp, mute=True)
             await control_led.send_colour()
         await asyncio.sleep(5)
 

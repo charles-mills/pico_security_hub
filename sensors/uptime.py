@@ -13,7 +13,7 @@ async def main():
     uptime = 0
     while True:
         mqtt_handler.publ_data(mqtt_handler.mqtt_link,
-                             "uptime", f"{uptime}s", mute=True)
+                               "uptime", f"{uptime}s", mute=True)
         uptime = await track_uptime(uptime)
 
 

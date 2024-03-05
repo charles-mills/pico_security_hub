@@ -74,7 +74,8 @@ def publ_bot_status(chat_bot: ChatBot) -> bool:
     chat_bot.update_message_by_conditions()
 
     if previous_message != chat_bot.message:
-        mqtt_handler.publ_data(mqtt_handler.mqtt_link, "bot_status", chat_bot.message, mute=True)
+        mqtt_handler.publ_data(mqtt_handler.mqtt_link,
+                               "bot_status", chat_bot.message, mute=True)
         return True
     return False
 
