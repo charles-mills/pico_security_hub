@@ -161,8 +161,8 @@ async def toggle_var_and_confirm(var, menu, display, labels) -> None:
     configuration.config_manager.toggle_var(var)
     if configuration.config_manager.NETWORKING_ENABLED:
         mqtt_handler.publ_data(mqtt_handler.mqtt_link, var,
-                             configuration.config_manager.ADAFRUIT_CONVERSION_DICT[
-                                 configuration.config_manager.config_dict[var]], True)
+                               configuration.config_manager.ADAFRUIT_CONVERSION_DICT[
+                                   configuration.config_manager.config_dict[var]], True)
     await selection_confirm_change(configuration.config_manager.config_dict[var], menu,
                                    display, labels)
     configuration.config_manager.write_config()
